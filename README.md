@@ -29,6 +29,9 @@ If you are pursuing engineering/ will be pursuing engineering/ have already purs
 - Read the respective section from `Theory` to understand how to get the code right
 - Add the code and submit the PR by following the github workflow which you can find [here](https://egghead.io/lessons/javascript-how-to-fork-and-clone-a-github-repository)
 
+## Your first PR!
+Go and add your name to the `contributors.md` file.
+
 ## Important
 - Kindly do look into the `CODE_OF_CONDUCT`
 - Follow the repository guidelines given in `RULES`
