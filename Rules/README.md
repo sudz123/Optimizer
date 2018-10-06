@@ -1,4 +1,4 @@
-# THE RULES
+## THE RULES
 
 - Code must be fully commented. Let us make it easier for others to understand your work
 - Follow [this](https://blog.github.com/2015-01-21-how-to-write-the-perfect-pull-request/) for submitting PRs
