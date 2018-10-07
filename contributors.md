@@ -10,3 +10,5 @@
 - [yashbhutoria](https://github.com/yashbhutoria)
     - [LinkedIn](https://www.linkedin.com/in/yashbhutoria/)
 - [Eduardo Schilling](https://github.com/elschilling)
+- [RAJ](https://github.com/krupalraj)
+    - [LinkedIn](https://www.linkedin.com/in/krupalraj/)
