@@ -1,17 +1,17 @@
-% Macro for Eigen
+// Macro for Eigen
 #ifndef EIGEN_MATRIX_H
 #include <Eigen/Dense>
 #endif
 
-% Macro for Optimizer
+// Macro for Optimizer
 #ifndef OPTIMIZE_GRAD_H
 #define OPTIMIZE_GRAD_H
 #endif
 
-% Function to calculate derivative using central differencing
-% Inputs are a function pointer of type Eigen::obj_func and a double variable
-% wrt which the function is being derivated
-% Returns an Eigen::Vector2d
+// Function to calculate derivative using central differencing
+// Inputs are a function pointer of type Eigen::obj_func and a double variable
+// wrt which the function is being derivated
+// Returns an Eigen::Vector2d
 Eigen::Vector2d derivative (double (*func)(double), double x) {
     
     double delta = 1e-5;
