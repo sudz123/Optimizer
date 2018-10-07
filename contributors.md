@@ -9,3 +9,4 @@
 - [Captain Dark0](https://github.com/Captain-DarkO)
 - [yashbhutoria](https://github.com/yashbhutoria)
     - [LinkedIn](https://www.linkedin.com/in/yashbhutoria/)
+- [Eduardo Schilling](https://github.com/elschilling)
