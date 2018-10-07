@@ -29,7 +29,7 @@ These are the features this library would be providing :
     - Newton's
     - Marquardt's
     - Conjugate Gradient
-    - Variable Metric
+    - Variable Metric (Implemented)
     
   **More Features coming soon!**
     
