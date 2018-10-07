@@ -5,7 +5,7 @@ These are the features this library would be providing :
 - Single Variable Optimization
   - Bracketing Methods
     - Exhaustive Search
-    - Bounding Phase
+    - Bounding Phase (Implemented)
   - Region Elimination Methods
     - Interval Halving
     - Fibonnaci Search
@@ -13,7 +13,7 @@ These are the features this library would be providing :
   - Point Estimation Methods
     - Succesive Quadratic Estimation
   - Gradient-based Methods
-    - Newton-Raphson
+    - Newton-Raphson (Implemented)
     - Bisection
     - Secant
     - Cubic Search
