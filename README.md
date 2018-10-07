@@ -39,9 +39,9 @@ If you are pursuing engineering/ will be pursuing engineering/ have already purs
 
 ## How to Contribute
 - Read this [README](README.md) completely.
-- Checkout [Features](Features/README.md) and [Issues](Issues)
+- Checkout [Features](Features/README.md) and [Issues](https://github.com/sudz123/Optimizer/issues)
 - Choose one which interests you, if it's already an Issue then add a comment claiming it. Else create a new issue.
-- Read the respective section from `Theory` to understand how to get the code right
+- Read the respective section from [Theory](Theory) to understand how to get the code right
 - Add the code and submit the PR by following the github workflow which you can find [here](https://egghead.io/lessons/javascript-how-to-fork-and-clone-a-github-repository)
 
 ## Your first PR!
