@@ -1,13 +1,17 @@
+// Macro for eigen
 #ifndef EIGEN_MATRIX_H
 #include <Eigen/Dense>
 #endif
 
-
+// Macro for Optimizer
 #ifndef OPTIMIZE_GRAD_H
 #include "grad.h"
 #endif
 
-
+// The Bounding Phase method
+// Input is a function pointer(of the objective function) and the variable of type double
+// This variable is the point at which we start the algorithm
+// Output is a Eigen::Vector2d
 Eigen::Vector2d boundingPhase (double (*obj_func)(double), double x) {
     double delta = 0.5;
     int k = 0, M = 500;
@@ -36,6 +40,10 @@ Eigen::Vector2d boundingPhase (double (*obj_func)(double), double x) {
     return res;
 }
 
+// The Newton Raphson method
+// Input is a function pointer(of the objective function) and an Eigen::Vector2d
+// This vector has the range over which the algorithm is evaluated
+// Output is a the Optimum point with +- epsilon accuracy
 double newtonRapshon (double (*obj_func)(double), Eigen::Vector2d range) {
     double x = (range(0) + range(1)) / 2;
     double epsilon = 1e-5;
