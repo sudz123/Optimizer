@@ -61,13 +61,13 @@ double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d r
     return x;
 }
 
-double SVOptimize (std::function<double (double)> obj_func, double x, string bracketing = "bound_phase", string unidir = "new_rap") {
+double SVOptimize (std::function<double (double)> obj_func, double x, std::string bracketing = "bound_phase", std::string unidir = "new_rap") {
 // This function does the single variable optimzation
 // Input parameters are :
 // obj_func - The std::function variable containing our objective function
 // x - Our initial point of type double
-// bracketing - Tells us which bracketing method to use. Is of type string
-// unidir - Tells us which uni-directional search to use. Is of type string
+// bracketing - Tells us which bracketing method to use. Is of type std::string
+// unidir - Tells us which uni-directional search to use. Is of type std::string
 // This function returns the optimum point(ans) of type double
     
     Eigen::Vector2d range = BoundingPhase(obj_func, x);
