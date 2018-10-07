@@ -8,6 +8,9 @@ We want the contributors to learn how C++ libraries work and also learn some mat
 
 **This repository is also hosted as a part of the Hacktoberfest. Register yourself [here](https://hacktoberfest.digitalocean.com/) and submit 5 PRs to win a free T-shirt. This repository is for you to learn the github workflow, understand the community and get started with Open Source.**
 
+**Watch the hacktoberfest teaser [here](https://youtu.be/wPlTQjOEPWo).**
+
+
 ## Understanding the Repository
 - [src](Optimizer/src) contains all the code
 - [Theory](Theory) contains all the algorithms we need to implement
