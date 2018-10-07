@@ -8,12 +8,11 @@
 #define OPTIMIZE_GRAD_H
 #endif
 
+Eigen::Vector2d Derivative (std::function<double (double)> func, double x) {
 // Function to calculate derivative using central differencing
 // Inputs are a function pointer and a double variable
 // This variable holds the value at which we have to apply central differencing
 // Returns an Eigen::Vector2d
-Eigen::Vector2d derivative (double (*func)(double), double x) {
-    
     double delta = 1e-5;
     double fx1 = func(x + delta);
     double fx2 = func(x - delta);
@@ -25,4 +24,17 @@ Eigen::Vector2d derivative (double (*func)(double), double x) {
     res << a, b;
 
     return res;
+}
+
+Eigen::VectorXd Gradient (std::function<double (Eigen::VectorXd)> func, Eigen::VectorXd x) {
+    int n = x.size();
+    Eigen::VectorXd G(n), delta_xi = Eigen::VectorXd::Zero(n);
+    double delta = 1e-5;
+    for (int i = 0; i < n; ++i) {
+        delta_xi(i) = delta;
+        G(i) = (func(x + delta_xi) - func(x - delta_xi)) / (2 * delta);
+        delta_xi(i) = 0;
+    }
+
+    return G;
 }
