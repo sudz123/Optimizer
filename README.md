@@ -24,6 +24,8 @@ We want the contributors to learn how C++ libraries work and also learn some mat
   - Go to the `Tests` folder and compile and run `test.cpp`. If there is no error then you have succesfully installed           `Eigen`, if not then you may get something like `Eigen/Dense: No such file or directory`. Revisit the previous steps and      see if you have screwed up somewhere.
 - Inside [test.cpp](Tests/test.cpp) you can see the line `#include "../Optimizer/optimizer"` on top. This is a specific link to the Optmizer  header file. You can see that if you move [test.cpp](Tests/test.cpp) somewhere outside this folder, it will not work.
 - To make sure that any `.cpp` file you use can include the Optmizer library by adding the line : `#include <Optimizer/optimizer>` you need to move the [Optmizer](Optimizer) folder in this repository into your `usr/local/include`. Once that is done check if it is working by moving [test.cpp](Tests/test.cpp) to some other arbitrary folder and changing this : `#include "../Optimizer/optimizer"` to this : `#include <Optimizer/optimizer>`
+- In case there are any errors, then make sure you report them as issues. Also before you report them, do check if you are using `C++11`. Mac OS `g++` compilers use an older version of C++. You may have to compile the code like this : 
+`g++ test.cpp -o test -std=c++11` 
  
 
 ## Key concepts
