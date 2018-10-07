@@ -4,6 +4,8 @@ C++ solutions to optimization problems
 ## About
 The goal is to build an Optimization library for C++ which can provide solutions for single variable and muli-variable optimization, constrained and unconstrained problems. The users should be able to select the algorithm to be used and also access any intermediate data which is obtained whilst running the algorithm. 
 
+We want the contributors to learn how C++ libraries work and also learn some mathematics. Some minimal efforts are required for each good PR. Unlike other repositories hosted for Hacktoberfest, we want to create a fully utilizable product for developers and researchers over the months of October and beyond. If you wish to be a part of this we promise you that your efforts would bring over a good impact to everyone who will be utlizing this product. Best of Luck!
+
 **This repository is also hosted as a part of the Hacktoberfest. Register yourself [here](https://hacktoberfest.digitalocean.com/) and submit 5 PRs to win a free T-shirt. This repository is for you to learn the github workflow, understand the community and get started with Open Source.**
 
 ## Understanding the Repository
