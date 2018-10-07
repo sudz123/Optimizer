@@ -10,7 +10,7 @@
 
 // Function to calculate derivative using central differencing
 // Inputs are a function pointer and a double variable
-// wrt which the function is being derivated
+// This variable holds the value at which we have to apply central differencing
 // Returns an Eigen::Vector2d
 Eigen::Vector2d derivative (double (*func)(double), double x) {
     
