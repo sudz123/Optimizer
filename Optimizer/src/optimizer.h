@@ -61,17 +61,21 @@ double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d r
     return x;
 }
 
+
 enum class BracketingMethod {
-  BOUND_PHASE
+// Enum class which users can use to select the bracketing method
+    B_PHASE
+    E_SEARCH
 };
 
 enum class UnidirectionalSearch {
-  NEW_RAP
+// Enum class which users can use to select the unidirectional search method
+  N_RAP
 };
 
 double SVOptimize (std::function<double (double)> obj_func,
-                   double x, BracketingMethod bracketing_method = BracketingMethod::BOUND_PHASE,
-                   UnidirectionalSearch undirectional_search = UnidirectionalSearch::NEW_RAP) {
+                   double x, BracketingMethod b_meth = BracketingMethod::B_PHASE,
+                   UnidirectionalSearch u_search = UnidirectionalSearch::N_RAP) {
 // This function does the single variable optimzation
 // Input parameters are :
 // obj_func - The std::function variable containing our objective function
@@ -85,15 +89,17 @@ double SVOptimize (std::function<double (double)> obj_func,
     return ans;
 }
 
-Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x) {
+Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func,
+                     Eigen::VectorXd x, int M = 1000, double epsilon = 1e-5, 
+                     BracketingMethod b_meth = BracketingMethod::B_PHASE,
+                     UnidirectionalSearch u_search = UnidirectionalSearch::N_RAP) {
 // This function does the multi-variable optimization using the variable metric algorithm
 // Input parameters are :
 // obj_func - The std::function variable containing our objective function
 // x - The initial point from where we begin, of type Eigen::VectorXd
     
     int n = x.size();
-    int it = 0, M = 1000;
-    double epsilon = 1e-5;
+    int it = 0;
 
     Eigen::VectorXd x_prev = x;
     Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
@@ -105,7 +111,7 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func, Eigen::Ve
 
     while (it < M) {
         std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
-        double alpha = SVOptimize(func, 0.0);
+        double alpha = SVOptimize(func, 0.0, b_meth, u_search);
         x_prev = x;
         x += alpha * S;
         ++it;
@@ -126,4 +132,13 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func, Eigen::Ve
     }
 
     return x;
+}
+
+Eigen::VectorXd Cauchy (std::function<double (Eigen::VectorXd)> obj_func,
+                        Eigen::VectorXd x, int M = 1000, double epsilon = 1e-5, 
+                        BracketingMethod b_meth = BracketingMethod::B_PHASE,
+                        UnidirectionalSearch u_search = UnidirectionalSearch::N_RAP) {
+
+    int n = x.size();
+    int it = 0;
 }
