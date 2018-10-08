@@ -3,6 +3,7 @@
 #include "../Optimizer/optimizer"
 using namespace std;
 using namespace Eigen;
+using namespace Optimizer;
 
 double func (double x) {
     return pow(x + 10, 2);
@@ -38,5 +39,4 @@ int main () {
     cout << "The Optimal Point obtained is: " << endl;
     Vector3d x(4, -3, 7);
     cout << DFP(func2, x) << endl;
-
 }
