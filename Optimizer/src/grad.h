@@ -9,6 +9,7 @@
 #endif
 
 namespace Optimizer {
+
     Eigen::Vector2d Derivative (std::function<double (double)> func, double x) {
         // Function to calculate derivative using central differencing
         // Inputs are a function pointer and a double variable
@@ -28,9 +29,11 @@ namespace Optimizer {
     }
 
     Eigen::VectorXd Gradient (std::function<double (Eigen::VectorXd)> func, Eigen::VectorXd x) {
+
         int n = x.size();
         Eigen::VectorXd G(n), delta_xi = Eigen::VectorXd::Zero(n);
         double delta = 1e-5;
+
         for (int i = 0; i < n; ++i) {
             delta_xi(i) = delta;
             G(i) = (func(x + delta_xi) - func(x - delta_xi)) / (2 * delta);
@@ -39,4 +42,30 @@ namespace Optimizer {
 
         return G;
     }
+
+    Eigen::MatrixXd Hessian (std::function<double (Eigen::VectorXd)> func, Eigen::VectorXd x) {
+
+        int n = x.size();
+        Eigen::MatrixXd H(n, n), delta_xi = Eigen::VectorXd::Zero(n), delta_xj = Eigen::VectorXd::Zero(n);
+        double delta = 1e-5;
+        double fx = func(x);
+
+        for(int i = 0; i < n; ++i){
+            for(int j = 0; j < n; ++j){
+
+                delta_xi(i) = delta;
+                delta_xj(j) = delta;
+                
+                if(i == j){
+                    H(i, j) = (func(x + delta_xi) + func(x - delta_xi) - 2*fx ) / pow(delta, 2); 
+                }
+                else{
+                    H(i, j) =  (func(x + delta_xi + delta_xj) + func(x - delta_xi - delta_xj) - func(x + delta_xi - delta_xj) - func(x - delta_xi + delta_xj) ) / (4 * pow(delta, 2) ) ; 
+                }
+            }
+        }
+
+        return H;
+    }
+
 }
