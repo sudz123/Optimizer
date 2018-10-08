@@ -97,6 +97,11 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func,
 // Input parameters are :
 // obj_func - The std::function variable containing our objective function
 // x - The initial point from where we begin, of type Eigen::VectorXd
+// M - Number of interations, type int
+// epsilon - termination parameter, type double
+// b_meth - Selects the Bracketing method to be used, type enum class BracketingMethod
+// u_search - Selects the Unidirectional search method, type enum class UnidirectionalSearch
+// Output is of type Eigen::VectorXd, it is the optimised point
     
     int n = x.size();
     int it = 0;
@@ -110,6 +115,7 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func,
     Eigen::VectorXd S = -G;
 
     while (it < M) {
+
         std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
         double alpha = SVOptimize(func, 0.0, b_meth, u_search);
         x_prev = x;
@@ -126,20 +132,59 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func,
 
         Eigen::VectorXd delta_x = x - x_prev;
         Eigen::VectorXd delta_G = G - G_prev;
-        A = A + (delta_x * delta_x.transpose())/(delta_x.transpose() * delta_G) - (A * delta_G * (A * delta_G).transpose())/(delta_G.transpose() * A * delta_G);
+        A = A + (delta_x * delta_x.transpose())/(delta_x.transpose() * delta_G) - 
+        (A * delta_G * (A * delta_G).transpose())/(delta_G.transpose() * A * delta_G);
 
         S = -A * G;
+
     }
 
     return x;
 }
 
 Eigen::VectorXd Cauchy (std::function<double (Eigen::VectorXd)> obj_func,
-                        Eigen::VectorXd x, int M = 1000, double epsilon = 1e-5, 
+                        Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5
                         BracketingMethod b_meth = BracketingMethod::B_PHASE,
                         UnidirectionalSearch u_search = UnidirectionalSearch::N_RAP) {
+// This function does the multi-variable optimization using the Cauchy's algorithm
+// Input parameters are :
+// obj_func - The std::function variable containing our objective function
+// x - The initial point from where we begin, of type Eigen::VectorXd
+// M - Number of interations, type int
+// epsilon1 - termination parameter, type double
+// epsilon 2 - termination parameter, type double
+// b_meth - Selects the Bracketing method to be used, type enum class BracketingMethod
+// u_search - Selects the Unidirectional search method, type enum class UnidirectionalSearch
+// Output is of type Eigen::VectorXd, it is the optimised point
 
     int n = x.size();
     int it = 0;
+    
+    Eigen::VectorXd x_prev = x;
+    Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
+    Eigen::VectorXd S = -G;
+
+    while (it < M){
+
+        if (G.norm < epsilon1)
+            break;
+
+        std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
+        double alpha = SVOptimize(func, 0.0, b_meth, u_search);
+        x_prev = x;
+        x += alpha * S;
+        ++it;
+
+        if ((x - x_prev).norm() / x_prev.norm() < epsilon1)
+            break;
+
+        G_prev = G;
+        G = Gradient(obj_func, x);
+
+        if ((G * G.transpose()).norm() < epsilon2)
+            break;
+
+    }
+
     return x;
 }
