@@ -10,9 +10,10 @@
 
 Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x) {
 // The Bounding Phase method
-// Input is a function pointer(of the objective function) and the variable of type double
+// Input is a std::function(of the objective function) and the variable of type double
 // This variable is the point at which we start the algorithm
 // Output is a Eigen::Vector2d
+    
     double delta = 0.5;
     int k = 0, M = 500;
     double fx1 = obj_func(x + delta), fx2 = obj_func(x), fx3 = obj_func(x - delta);
@@ -42,9 +43,10 @@ Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x
 
 double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d range) {
 // The Newton Raphson method
-// Input is a function pointer(of the objective function) and an Eigen::Vector2d
+// Input is a std::function(of the objective function) and an Eigen::Vector2d
 // This vector has the range over which the algorithm is evaluated
 // Output is a the Optimum point with +- epsilon accuracy
+    
     double x = (range(0) + range(1)) / 2;
     double epsilon = 1e-5;
     int it = 1, M = 500;
@@ -59,12 +61,36 @@ double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d r
     return x;
 }
 
-double SVOptimize (std::function<double (double)> obj_func, double x) {
+enum class BracketingMethod {
+  BOUND_PHASE
+};
+
+enum class UnidirectionalSearch {
+  NEW_RAP
+};
+
+double SVOptimize (std::function<double (double)> obj_func,
+                   double x, BracketingMethod bracketing_method = BracketingMethod::BOUND_PHASE,
+                   UnidirectionalSearch undirectional_search = UnidirectionalSearch::NEW_RAP) {
+// This function does the single variable optimzation
+// Input parameters are :
+// obj_func - The std::function variable containing our objective function
+// x - Our initial point of type double
+// bracketing - Tells us which bracketing method to use. Is of type std::string
+// unidir - Tells us which uni-directional search to use. Is of type std::string
+// This function returns the optimum point(ans) of type double
+    
     Eigen::Vector2d range = BoundingPhase(obj_func, x);
-    return NewtonRapshon(obj_func, range);
+    double ans = NewtonRapshon(obj_func, range);
+    return ans;
 }
 
 Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x) {
+// This function does the multi-variable optimization using the variable metric algorithm
+// Input parameters are :
+// obj_func - The std::function variable containing our objective function
+// x - The initial point from where we begin, of type Eigen::VectorXd
+    
     int n = x.size();
     int it = 0, M = 1000;
     double epsilon = 1e-5;
