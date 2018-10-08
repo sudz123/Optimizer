@@ -143,7 +143,7 @@ Eigen::VectorXd DFP (std::function<double (Eigen::VectorXd)> obj_func,
 }
 
 Eigen::VectorXd Cauchy (std::function<double (Eigen::VectorXd)> obj_func,
-                        Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5
+                        Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5,
                         BracketingMethod b_meth = BracketingMethod::B_PHASE,
                         UnidirectionalSearch u_search = UnidirectionalSearch::N_RAP) {
 // This function does the multi-variable optimization using the Cauchy's algorithm
@@ -166,7 +166,7 @@ Eigen::VectorXd Cauchy (std::function<double (Eigen::VectorXd)> obj_func,
 
     while (it < M){
 
-        if (G.norm < epsilon1)
+        if (G.norm() < epsilon1)
             break;
 
         std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
