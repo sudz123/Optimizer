@@ -64,7 +64,7 @@ double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d r
 
 enum class BracketingMethod {
 // Enum class which users can use to select the bracketing method
-    B_PHASE
+    B_PHASE,
     E_SEARCH
 };
 
