@@ -141,4 +141,5 @@ Eigen::VectorXd Cauchy (std::function<double (Eigen::VectorXd)> obj_func,
 
     int n = x.size();
     int it = 0;
+    return x;
 }
