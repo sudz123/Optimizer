@@ -183,7 +183,7 @@ namespace Optimizer {
             G_prev = G;
             G = Gradient(obj_func, x);
 
-            if ((G * G.transpose()).norm() < epsilon2)
+            if ((G * G_prev.transpose()).norm() < epsilon2)
                 break;
 
         }
@@ -211,8 +211,9 @@ namespace Optimizer {
 
         Eigen::VectorXd x_prev = x;
         Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
-        Eigen::VectorXd S = -G;
-
+        Eigen::MatrixXd H = Hessian(obj_func, x);
+        Eigen::VectorXd S = - H.inverse() * G;
+        
         while (it < M){
 
             if (G.norm() < epsilon1)
@@ -229,9 +230,7 @@ namespace Optimizer {
 
             G_prev = G;
             G = Gradient(obj_func, x);
-
-            if ((G * G.transpose()).norm() < epsilon2)
-                break;
+            H = Hessian(obj_func, x);
 
         }
 
