@@ -25,11 +25,11 @@ These are the features this library would be providing :
     - Hooke-Jeeves Pattern Search
     - Powell's Conjugate Direction
   - Gradient Based Methods
-    - Cauchy's
+    - Cauchy's (Implemented)
     - Newton's
     - Marquardt's
     - Conjugate Gradient
-    - Variable Metric
+    - Variable Metric (DFP) (Implemented)
     
   **More Features coming soon!**
     
