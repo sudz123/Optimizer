@@ -17,7 +17,7 @@ We want the contributors to learn how C++ libraries work and also learn some mat
 - [Features](Features) has information about current features as well as features required. **New Contributors head here!**
 
 ## How to get this working?
-**Currently there is no support for Windows.** For MAC/ Linux users :
+For MAC/ Linux users :
 - Fork and then clone this repository from your fork
 - Install `Eigen` if you haven't already. Follow the instructions given [here](http://eigen.tuxfamily.org/index.php?title=Main_Page#Download)
   - Once you have downloaded the zip file from the link, extract it
@@ -30,6 +30,10 @@ We want the contributors to learn how C++ libraries work and also learn some mat
 - In case there are any errors, then make sure you report them as issues. Also before you report them, do check if you are using `C++11`. Mac OS `g++` compilers use an older version of C++. You may have to compile the code like this : 
 `g++ test.cpp -o test -std=c++11` 
  
+ For Windows users :
+ - You will have to move the `optmizer.h` and `grad.h` files to wherever you want
+ - In your .cpp file you will have to add a `#include "*path to Optimizer.h*"`
+ - Eigen you can install using the same steps for MAC/Linux 
 
 ## Key concepts
 If you are pursuing engineering/ will be pursuing engineering/ have already pursued engineering, then this should be very easy for you to grasp. Without going too much into the mathematics you can easily code up the algorithms if you wish. But as a rule of thumb familiarity with these concepts would be helpful : 
