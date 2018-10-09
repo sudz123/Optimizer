@@ -14,4 +14,4 @@
     - [LinkedIn](https://www.linkedin.com/in/krupalraj/)
 - [NILESH PATRA](https://github.com/nileshpatra)
     - [LinkedIn](https://www.linkedin.com/in/nilesh-patra-60954584/)
-- [Alessandro Digilio] (https://github.com/alsd4git)
+- [Alessandro Digilio](https://github.com/alsd4git)
