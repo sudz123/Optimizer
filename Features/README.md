@@ -26,7 +26,7 @@ These are the features this library would be providing :
     - Powell's Conjugate Direction
   - Gradient Based Methods
     - Cauchy's (Implemented)
-    - Newton's
+    - Newton's (Implemented)
     - Marquardt's
     - Conjugate Gradient
     - Variable Metric (DFP) (Implemented)
