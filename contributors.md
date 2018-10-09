@@ -17,4 +17,5 @@
 - [Alessandro Digilio](https://github.com/alsd4git)
 - [Kevin Santos](https://github.com/champagnepappi/)
     - [LinkedIn](https://www.linkedin.com/in/kevin-ochieng/)
+- [Koji Adriano Jr.] (https://github.com/kojiadrianojr)
 
