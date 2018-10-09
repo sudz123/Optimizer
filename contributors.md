@@ -15,3 +15,6 @@
 - [NILESH PATRA](https://github.com/nileshpatra)
     - [LinkedIn](https://www.linkedin.com/in/nilesh-patra-60954584/)
 - [Alessandro Digilio](https://github.com/alsd4git)
+- [Kevin Santos](https://github.com/champagnepappi/)
+    - [LinkedIn](https://www.linkedin.com/in/kevin-ochieng/)
+
