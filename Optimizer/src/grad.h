@@ -62,7 +62,13 @@ namespace Optimizer {
                 else{
                     H(i, j) =  (func(x + delta_xi + delta_xj) + func(x - delta_xi - delta_xj) - func(x + delta_xi - delta_xj) - func(x - delta_xi + delta_xj) ) / (4 * pow(delta, 2) ) ; 
                 }
+
+                delta_xj(j) = 0;
+
             }
+
+            delta_xi(i) = 0;
+
         }
 
         return H;

@@ -238,17 +238,13 @@ namespace Optimizer {
     }
 
     Eigen::VectorXd Marquardt (std::function<double (Eigen::VectorXd)> obj_func,
-                            Eigen::VectorXd x, int M = 1000, double epsilon = 1e-5, double lambda = 1e4,
-                            BM b_meth = BM::B_PHASE,
-                            UDM u_search = UDM::N_RAP) {
+                            Eigen::VectorXd x, int M = 1000, double epsilon = 1e-5, double lambda = 1e4) {
         // This function does the multi-variable optimization using the Marquardt's algorithm
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
         // x - The initial point from where we begin, of type Eigen::VectorXd
         // M - Number of interations, type int
         // epsilon - termination parameter, type double
-        // b_meth - Selects the Bracketing method to be used, type enum class BM
-        // u_search - Selects the Unidirectional search method, type enum class UDM
         // Output is of type Eigen::VectorXd, it is the optimised point
 
         int n = x.size();
@@ -258,13 +254,14 @@ namespace Optimizer {
         Eigen::VectorXd G = Gradient(obj_func, x);
         Eigen::MatrixXd I = Eigen::MatrixXd::Identity(n, n);
         Eigen::MatrixXd H = Hessian(obj_func, x);
-        Eigen::VectorXd S = - (H + lambda * I).inverse() * G;
+        Eigen::VectorXd S;
         
         while (it < M){
 
             if (G.norm() < epsilon)
                 break;
 
+            S = - (H + lambda * I).inverse() * G;
             x_prev = x;
             x += S;
             ++it;

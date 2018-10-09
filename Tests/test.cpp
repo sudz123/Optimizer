@@ -14,6 +14,7 @@ double func2 (VectorXd x) {
 }
 
 int main () {
+
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
     cout << "Test Bounding Phase:" << endl;
     double ipt = 5.4;
@@ -35,8 +36,25 @@ int main () {
     cout << "Testing Gradient function using func2 with 3 variables" << endl;
     cout << Gradient(func2, Vector3d(3, 3, 4)) << endl;
 
+    cout << "Testing Hessian function using func2 with 3 variables" << endl;
+    cout << Hessian(func2, Vector3d(3, 3, 4)) << endl;
+
+    Vector3d x(4, -3, 7);
+
     cout << "Testing DFP on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
-    Vector3d x(4, -3, 7);
     cout << DFP(func2, x) << endl;
+
+    cout << "Testing Newton's method on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << Newton(func2, x) << endl;
+
+    cout << "Testing Cauchy's method on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << Cauchy(func2, x) << endl;
+
+    cout << "Testing Marquardt's method on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << Marquardt(func2, x) << endl;
+
 }
