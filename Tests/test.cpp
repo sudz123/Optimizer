@@ -57,4 +57,8 @@ int main () {
     cout << "The Optimal Point obtained is: " << endl;
     cout << Marquardt(func2, x) << endl;
 
+    cout << "Testing Conjugate Gradient method on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << ConjugateGradient(func2, x) << endl;
+
 }

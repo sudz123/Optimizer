@@ -279,4 +279,55 @@ namespace Optimizer {
         return x;
     }
 
+    Eigen::VectorXd ConjugateGradient (std::function<double (Eigen::VectorXd)> obj_func,
+                                        Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5,
+                                        double epsilon3 = 1e-5, BM b_meth = BM::B_PHASE, UDM u_search = UDM::N_RAP) {
+        // This function does the multi-variable optimization using the Conjugate Gradient algorithm
+        // Input parameters are :
+        // obj_func - The std::function variable containing our objective function
+        // x - The initial point from where we begin, of type Eigen::VectorXd
+        // M - Number of interations, type int
+        // epsilon1 - termination parameter, type double
+        // epsilon2 - termination parameter, type double
+        // epsilon3 - termination parameter, type double
+        // b_meth - Selects the Bracketing method to be used, type enum class BM
+        // u_search - Selects the Unidirectional search method, type enum class UDM
+        // Output is of type Eigen::VectorXd, it is the optimised point
+
+        int n = x.size();
+        int it = 0;
+
+        Eigen::VectorXd x_prev = x;
+        Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
+        Eigen::VectorXd S = - G, S_prev = S;
+        std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
+        double alpha = SVOptimize(func, 0.0, b_meth, u_search);
+        x += alpha * S;
+        G = Gradient(obj_func, x);
+
+        while (it < M){
+
+            S = - G + (G.squaredNorm()/G_prev.squaredNorm()) * S_prev;
+
+            std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
+            double alpha = SVOptimize(func, 0.0, b_meth, u_search);
+            x_prev = x;
+            S_prev = S;
+            x += alpha * S;
+            ++it;
+
+            if ((x - x_prev).norm() / x_prev.norm() < epsilon1)
+                break;
+
+            G_prev = G;
+            G = Gradient(obj_func, x);
+
+            if (G.norm() < epsilon2)
+                break;
+
+        }
+
+        return x;
+    }
+
 }
