@@ -47,6 +47,40 @@ namespace Optimizer {
         return res;
     }
 
+    Eigen::Vector2d Exhaustive (std::function<double (double)> obj_func, double x) {
+        // The Exhaustive Search method
+        // Input is a std::function(of the objective function) and the variable of type double
+        // This variable is the point at which we start the algorithm
+        // Output is a Eigen::Vector2d
+
+        double delta = 0.5;
+        int k = 0, M = 500;
+        double x2 = x + delta, x1 = x - delta;
+        double fx1 = obj_func(x1), fx = obj_func(x), fx2 = obj_func(x2);
+        Eigen::Vector2d res;
+
+        if (fx1 <= fx && fx <= fx2)
+            delta = -delta;
+
+        while(k < M){
+
+            if ( fx1 >= fx && fx <= fx2){
+                res << x1, x2;
+                break;
+            }
+
+            x1 = x;
+            x = x2;
+            x2 = x2 + delta;
+            fx1 = fx;
+            fx = fx2;
+            fx2 = obj_func(x2);
+
+        } 
+
+        return res;
+    }
+
     double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d range) {
         // The Newton Raphson method
         // Input is a std::function(of the objective function) and an Eigen::Vector2d
@@ -64,7 +98,9 @@ namespace Optimizer {
             dfx = Derivative(obj_func, x);
             ++it;
         }
+
         return x;
+
     }
 
     double GoldenSection (std::function<double (double)> obj_func, Eigen::Vector2d range) {
@@ -152,6 +188,8 @@ namespace Optimizer {
         switch (b_meth) {
 
             case BM::B_PHASE : range = BoundingPhase(obj_func, x);
+                break;
+            case BM::E_SEARCH : range = Exhaustive(obj_func, x);
                 break;
             default : range = BoundingPhase(obj_func, x);
 

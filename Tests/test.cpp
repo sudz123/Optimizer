@@ -5,9 +5,8 @@ using namespace std;
 using namespace Eigen;
 using namespace Optimizer;
 
-// This function will return the square after adding 10 to the given number.
-
 double func (double x) {
+    // This function will return the square after adding 10 to the given number.
     return pow(x + 10, 2);
 }
 
@@ -22,10 +21,16 @@ double func3 (Vector2d x) {
 int main () {
 
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
-    cout << "Test Bounding Phase:" << endl;
     double ipt = 5.4;
+
+    cout << "Test Bounding Phase:" << endl;
     Vector2d range = BoundingPhase(func, ipt);
     cout << "Range from bounding Phase for initial point :" << ipt << endl;
+    cout << range << endl;
+
+    cout << "Test Exhaustive Search:" << endl;
+    range = Exhaustive(func, ipt);
+    cout << "Range from Exhaustive Search for initial point :" << ipt << endl;
     cout << range << endl;
 
     cout << "Derivatives at " << ipt << endl;
