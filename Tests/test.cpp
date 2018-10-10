@@ -29,6 +29,10 @@ int main () {
     cout << "Optimal Point is: ";
     cout << NewtonRapshon (func, range) << endl;;
 
+    cout << "Finding optimal point using above range for Golden Section Search Method." << endl;
+    cout << "Optimal Point is: ";
+    cout << GoldenSection (func, range) << endl;;
+
     cout << "Testing SVOptimize on (x + 10)^2 with initial point 5.4." << endl;
     cout << "The Optimal Point obtained is: ";
     cout << SVOptimize(func, 5.4) << endl;
