@@ -9,7 +9,7 @@ These are the features this library would be providing :
   - Region Elimination Methods
     - Interval Halving
     - Fibonnaci Search
-    - Golden Section Search
+    - Golden Section Search (Implemented)
   - Point Estimation Methods
     - Succesive Quadratic Estimation
   - Gradient-based Methods
