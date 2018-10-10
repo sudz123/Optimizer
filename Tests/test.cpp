@@ -5,6 +5,8 @@ using namespace std;
 using namespace Eigen;
 using namespace Optimizer;
 
+// This function will return the square after adding 10 to the given number.
+
 double func (double x) {
     return pow(x + 10, 2);
 }
