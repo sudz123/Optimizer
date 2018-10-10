@@ -47,11 +47,11 @@ namespace Optimizer {
         // The Newton Raphson method
         // Input is a std::function(of the objective function) and an Eigen::Vector2d
         // This vector has the range over which the algorithm is evaluated
-        // Output is a the Optimum point with +- epsilon accuracy
+        // Output is a the Optimum point, type double
 
         double x = (range(0) + range(1)) / 2;
         double epsilon = 1e-5;
-        int it = 1, M = 500;
+        int it = 0, M = 500;
 
         Eigen::Vector2d dfx = Derivative(obj_func, x);
 
@@ -63,6 +63,61 @@ namespace Optimizer {
         return x;
     }
 
+    double GoldenSection (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Golden Section search method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+
+        double epsilon = 1e-5;
+        int it = 0, M = 500;
+        double l = 1;
+        double low = 0, high = 1;
+        double w1 = low + 0.618 * l;
+        double w2 = high - 0.618 * l;
+        double x = (range(0) + range(1)) / 2;
+        double f1, f2, x1, x2;
+        x1 = w1 * (range(1)-range(0)) + range(0);
+        x2 = w2 * (range(1)-range(0)) + range(0);
+        f1 = obj_func(x1);
+        f2 = obj_func(x2);
+
+        while (it < M && l > epsilon) {
+            if(f1 > f2){
+
+                x = x2;
+                high = w1;
+                l = high - low;
+                w1 = w2;
+                w2 = high - 0.618 * l;
+                x1 = x2;
+                x2 = w2 * (range(1)-range(0)) + range(0);
+                f1 = f2;
+                f2 = obj_func(x2);
+                ++it;
+                
+            }
+            else{
+
+                x = x1;
+                low = w2;
+                l = high - low;
+                w2 = w1;
+                w1 = low + 0.618 * l;
+                x2 = x1;
+                x1 = w1 * (range(1)-range(0)) + range(0);
+                f2 = f1;
+                f1 = obj_func(x1);
+                ++it;
+
+            }
+
+        }
+        return x;
+    }
+
+
+
 
     enum class BM {
         // Enum class which users can use to select the bracketing method
@@ -72,7 +127,8 @@ namespace Optimizer {
 
     enum class UDM {
         // Enum class which users can use to select the unidirectional search method
-        N_RAP
+        N_RAP,
+        G_SEARCH
     };
 
     double SVOptimize (std::function<double (double)> obj_func,
