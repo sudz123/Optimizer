@@ -116,17 +116,18 @@ namespace Optimizer {
         return x;
     }
 
-
-
-
     enum class BM {
         // Enum class which users can use to select the bracketing method
+        // B_PHASE is for Bounding Phase
+        // E_SEARCH is for Exhaustive Search
         B_PHASE,
         E_SEARCH
     };
 
     enum class UDM {
         // Enum class which users can use to select the unidirectional search method
+        // N_RAP is for Newton Raphson
+        // G_search is for Golden Section Search
         N_RAP,
         G_SEARCH
     };
@@ -142,8 +143,28 @@ namespace Optimizer {
         // unidir - Tells us which uni-directional search to use. Is of type std::string
         // This function returns the optimum point(ans) of type double
 
-        Eigen::Vector2d range = BoundingPhase(obj_func, x);
-        double ans = NewtonRapshon(obj_func, range);
+        Eigen::Vector2d range;
+
+        switch (b_meth) {
+
+            case BM::B_PHASE : range = BoundingPhase(obj_func, x);
+                break;
+            default : range = BoundingPhase(obj_func, x);
+
+        }
+
+        double ans;
+
+        switch (u_search) {
+
+            case UDM::N_RAP : ans = NewtonRapshon(obj_func, range);
+                break;
+            case UDM::G_SEARCH : ans = GoldenSection(obj_func, range);
+                break;
+            default : ans = GoldenSection(obj_func, range);
+
+        }
+
         return ans;
     }
 
