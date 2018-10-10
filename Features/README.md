@@ -27,8 +27,8 @@ These are the features this library would be providing :
   - Gradient Based Methods
     - Cauchy's (Implemented)
     - Newton's (Implemented)
-    - Marquardt's
-    - Conjugate Gradient
+    - Marquardt's (Implemented)
+    - Conjugate Gradient (Implemented)
     - Variable Metric (DFP) (Implemented)
     
   **More Features coming soon!**
