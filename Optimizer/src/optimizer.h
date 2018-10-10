@@ -3,9 +3,13 @@
 #include <Eigen/Dense>
 #endif
 
-// Macro for Optimizer
+// Macros for Optimizer
 #ifndef OPTIMIZE_GRAD_H
 #include "grad.h"
+#endif
+
+#ifndef OPTIMIZE_UTIL_H
+#include "util.h"
 #endif
 
 namespace Optimizer {
