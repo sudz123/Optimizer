@@ -18,4 +18,6 @@
 - [Kevin Santos](https://github.com/champagnepappi/)
     - [LinkedIn](https://www.linkedin.com/in/kevin-ochieng/)
 - [Koji Adriano Jr.](https://github.com/kojiadrianojr)
+- [Param Mittal](https://github.com/parammittal16)
+    - [LinkedIn](https://www.linkedin.com/in/parammittal16/)
 
