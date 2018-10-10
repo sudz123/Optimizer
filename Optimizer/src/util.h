@@ -12,18 +12,6 @@
 #include <iostream>
 #include <fstream>
 
-//ISSUE #76
-/*util.h has two unimplemented functions in the class Optimum
-
-    SaveAsTxt()
-    SaveAsCsv()
-
-On being called these should respectively create a txt/csv file. 
-These files should have each line storing data from one row of Eigen::MatrixXd path.
- Should be fairly easy.*/
-
-
-
 namespace Optimizer {
 
 	class Optimum
