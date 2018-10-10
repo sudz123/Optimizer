@@ -4,7 +4,7 @@ These are the features this library would be providing :
 
 - Single Variable Optimization
   - Bracketing Methods
-    - Exhaustive Search
+    - Exhaustive Search (Implemented)
     - Bounding Phase (Implemented)
   - Region Elimination Methods
     - Interval Halving
