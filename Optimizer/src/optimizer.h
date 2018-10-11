@@ -75,11 +75,54 @@ namespace Optimizer {
             fx1 = fx;
             fx = fx2;
             fx2 = obj_func(x2);
-
+        
         } 
 
         return res;
     }
+
+
+    //Bisection method - 
+    //Input: std::function - function object; 
+    // a, b - respectively: lower search bound, higher search bound
+    //tolerance - sets maximum deviation from root f(x) = 0
+    //max_iter - maximum iteration before operation cancelation
+    //Output: value which differs from a root of f(x)=0 by less than tolerance value 
+    double Bisection(std::function<double (double)> obj_func, double a, double b ,double tolerance, int max_iter)
+    {
+        if(a == b)
+        {
+            std::cout << "Bisection fail: endpoit values cannot be equal to each other." << std::endl;
+            return 0.0;//TODO: return error instead of value
+        }
+        //Set variables
+        int n = 0;
+        double c = 0;
+        //Check iterator to avoid infinite loop
+        while(n <= max_iter)
+        {
+            //Calcluate mid point
+            c = (a + b) / 2;
+            //Solution statement
+            if(obj_func(c) == 0 || (b-a)/2 < tolerance)
+            {
+                return c;
+            }
+            //step counter up
+            n++;
+            //Set new, smaller interval
+            if(sgn(obj_func(c)) == sgn(obj_func(a)))
+            {
+                a = c;
+            }
+            else
+            {
+                b = c;
+            }
+        }
+        std::cout << "Bisection fail: Max number of iteration exceeded." << std::endl;
+    }
+
 
     double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d range) {
         // The Newton Raphson method

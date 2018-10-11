@@ -48,6 +48,10 @@ int main () {
     cout << "The Optimal Point obtained is: ";
     cout << SVOptimize(func, 5.4) << endl;
 
+     cout << "Testing Bisection method on (x + 10)^2" << endl;
+     cout << "The closest point to root found: ";
+     cout << Bisection(func, -20, 0, 0.001, 10000) << endl;
+
     cout << "Testing Gradient function using SumSquares with 3 variables" << endl;
     cout << Gradient(SumSquares, Vector3d(3, 3, 4)) << endl;
 
@@ -79,5 +83,4 @@ int main () {
     cout << "Testing Conjugate Gradient method on Matyas function with 2 variables and initial point (-3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Matyas, Vector2d(-3, 7)) << endl;
-
 }
