@@ -202,6 +202,40 @@ namespace Optimizer {
         return x;
     }
 
+    double Secant (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Secant method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+
+        double epsilon = 1e-5;
+        int it = 0, M = 500;
+        double x;
+        Eigen::Vector2d f1, f2, f;
+        f2 = Derivative(obj_func, range(1));
+        f1 = Derivative(obj_func, range(0));
+
+        while(it < M) {
+
+            x = range(1) - f2(0) * (range(1) - range(0))/(f2(0) - f1(0));
+            f = Derivative(obj_func, x);
+            if(std::abs(f(0)) < epsilon) {
+                break;
+            }
+            else if(f(0) < 0) {
+                range(0) = x;
+                f1 = f;
+            }
+            else {
+                range(1) = x;
+                f2 = f;
+            }
+            ++it;
+        }
+
+        return x;
+    }
+
 
 
     enum class BM {
