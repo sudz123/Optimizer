@@ -38,11 +38,15 @@ int main () {
 
     cout << "Finding optimal point using above range for Newton Rapshon Method." << endl;
     cout << "Optimal Point is: ";
-    cout << NewtonRapshon (func, range) << endl;;
+    cout << NewtonRapshon (func, range) << endl;
 
     cout << "Finding optimal point using above range for Golden Section Search Method." << endl;
     cout << "Optimal Point is: ";
-    cout << GoldenSection (func, range) << endl;;
+    cout << GoldenSection (func, range) << endl;
+
+    cout << "Finding optimal point using above range for Interval Halving Method." << endl;
+    cout << "Optimal Point is: ";
+    cout << IntervalHalving (func, range) << endl;
 
     cout << "Testing SVOptimize on (x + 10)^2 with initial point 5.4." << endl;
     cout << "The Optimal Point obtained is: ";
