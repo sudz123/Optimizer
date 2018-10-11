@@ -9,7 +9,10 @@
 #endif
 
 //Libs for file operations
+#ifndef _IOSTREAM_
 #include <iostream>
+#endif
+
 #include <fstream>
 
 namespace Optimizer {
