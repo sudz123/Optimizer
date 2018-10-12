@@ -1,12 +1,9 @@
-// Macro for Eigen
-#ifndef EIGEN_MATRIX_H
-#include <Eigen/Dense>
-#endif
-
 // Macro for Optimizer
 #ifndef OPTIMIZE_GRAD_H
 #define OPTIMIZE_GRAD_H
-#endif
+
+// Macro for Eigen
+#include <Eigen/Dense>
 
 namespace Optimizer {
 
@@ -75,3 +72,5 @@ namespace Optimizer {
     }
 
 }
+
+#endif
