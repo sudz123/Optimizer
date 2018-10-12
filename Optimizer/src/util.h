@@ -73,4 +73,19 @@ namespace Optimizer {
         }
 
     };
+
+
+
+
+   
+    template <typename T> int sgn(T val) {
+    //Signum function,
+    //Value range from -1 to 1
+    //Returns integer
+    //Works on ints, floats, doubles, unsigned base numerical type and custom types constructible from integer
+    return (T(0) < val) - (val < T(0));
+}
+
+
+
 }
