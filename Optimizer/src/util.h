@@ -9,6 +9,7 @@
 #endif
 
 #include <fstream>
+#include <vector>
 
 namespace Optimizer {
 
@@ -71,4 +72,18 @@ namespace Optimizer {
         }
 
     };
+
+    std::vector<int> getFibonacci(int n){
+
+        int f0 = 1, f1 = 1;
+        std::vector<int> fib = {f0, f1};
+
+        for(int i=2; i <= n+1; ++i){
+            f1 = f1 + f0;
+            f0 = f1 - f0;
+            fib.push_back(f1);
+        }
+ 
+        return fib;
+    }
 }

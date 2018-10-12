@@ -52,6 +52,10 @@ int main () {
     cout << "Optimal Point is: ";
     cout << IntervalHalving (func, range) << endl;
 
+    cout << "Finding optimal point using above range for Fibonnaci Search Method." << endl;
+    cout << "Optimal Point is: ";
+    cout << Fibonacci (func, range) << endl;
+
     cout << "Testing SVOptimize on (x + 10)^2 with initial point 5.4." << endl;
     cout << "The Optimal Point obtained is: ";
     cout << SVOptimize(func, 5.4) << endl;

@@ -202,6 +202,55 @@ namespace Optimizer {
         return x;
     }
 
+    double Fibonacci (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Fibonacci Search method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+        // Be careful not to set higher values of M as double might overflow (IMPORTANT)
+
+        int k = 2, M = 20;
+        double x = (range(0) + range(1)) / 2;
+        std::vector<int> fib = getFibonacci(M);
+        double l = range(1)-range(0), l_star, x1, x2, f1, f2;
+        l_star = ((double)fib[M-k] / (double)fib[M]) * l;
+
+        x1 = range(0) + l_star;
+        x2 = range(1) - l_star;
+        f1 = obj_func(x1);
+        f2 = obj_func(x2);
+
+        while(k!=M){
+
+            ++k;
+            l_star = ((double)fib[M-k] / (double)fib[M]) * l;
+
+            if (f1 < f2) {
+
+                range(1) = x2;
+                x = x1;
+                x2 = x1;
+                x1 = range(0) + l_star;
+                f2 = f1;
+                f1 = obj_func(x1);
+
+            }
+            else {
+
+                range(0) = x1;
+                x = x2;
+                x1 = x2;
+                x2 = range(1) - l_star;
+                f1 = f2;
+                f2 = obj_func(x2);
+
+            }
+
+        }
+
+        return x;
+    }
+
     double Secant (std::function<double (double)> obj_func, Eigen::Vector2d range) {
         // The Secant method
         // Input is a std::function(of the objective function) and an Eigen::Vector2d
