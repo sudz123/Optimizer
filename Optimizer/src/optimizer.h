@@ -1,16 +1,10 @@
-// Macro for eigen
-#ifndef EIGEN_MATRIX_H
+#ifndef OPTIMIZER_H
+#define OPTIMIZER_H
+
+/* Includes */
 #include <Eigen/Dense>
-#endif
-
-// Macros for Optimizer
-#ifndef OPTIMIZE_GRAD_H
 #include "grad.h"
-#endif
-
-#ifndef OPTIMIZE_UTIL_H
 #include "util.h"
-#endif
 
 namespace Optimizer {
     
@@ -584,3 +578,5 @@ namespace Optimizer {
     }
 
 }
+
+#endif   /* OPTIMIZER_H */

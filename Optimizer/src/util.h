@@ -1,13 +1,7 @@
-// Macro for Eigen
-#ifndef EIGEN_MATRIX_H
-#include <Eigen/Dense>
-#endif
-
-// Macro for Optimizer
 #ifndef OPTIMIZE_UTIL_H
 #define OPTIMIZE_UTIL_H
-#endif
 
+#include <Eigen/Dense>
 #include <fstream>
 #include <vector>
 
@@ -87,3 +81,5 @@ namespace Optimizer {
         return fib;
     }
 }
+
+#endif  /* OPTIMIZE_UTIL_H */
