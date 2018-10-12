@@ -83,4 +83,10 @@ int main () {
     cout << "Testing Conjugate Gradient method on Matyas function with 2 variables and initial point (-3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Matyas, Vector2d(-3, 7)) << endl;
+
+    cout << "Testing Data Save Methods << endl"
+    Optimum point1;
+    point1.path = Hessian(SumSquares, Vector3d(3, 3, 4));
+    point1.SaveAsTxt();
+    point1.SaveAsCsv();
 }
