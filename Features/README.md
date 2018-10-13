@@ -15,7 +15,7 @@ These are the features this library would be providing :
   - Gradient-based Methods
     - Newton-Raphson (Implemented)
     - Bisection (Implemented)
-    - Secant
+    - Secant (Implemented)
     - Cubic Search
 
 - Multi Variable Optimization Algorithms
