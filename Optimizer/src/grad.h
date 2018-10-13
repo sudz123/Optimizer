@@ -14,7 +14,8 @@ namespace Optimizer {
         // Function to calculate derivative using central differencing
         // Inputs are a function pointer and a double variable
         // This variable holds the value at which we have to apply central differencing
-        // Returns an Eigen::Vector2d
+        // Returns an Eigen::Vector2d, which first element is single derivative of a func
+        // and the second element is second derivative
         double delta = 1e-5;
         double fx1 = func(x + delta);
         double fx2 = func(x - delta);

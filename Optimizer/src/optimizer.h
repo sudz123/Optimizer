@@ -83,7 +83,7 @@ namespace Optimizer {
 
 
     
-    double Bisection(std::function<double (double)> obj_func, Eigen::Vector2d range ,double tolerance, int max_iter)
+    double Bisection(std::function<double (double)> obj_func, Eigen::Vector2d range, double tolerance, int max_iter)
     {
     //Bisection method - 
     //Input: std::function - function object; 
@@ -91,28 +91,50 @@ namespace Optimizer {
     //tolerance - sets maximum deviation from root f(x) = 0
     //max_iter - maximum iteration before operation cancelation
     //Output: value which differs from a root of f(x)=0 by less than tolerance value 
+     
         if(range(0) == range(1))
         {
-            std::cout << "Bisection fail: endpoit values cannot be equal to each other." << std::endl;
+            std::cout << "Bisection fail: endpoint values cannot be equal to each other." << std::endl;
             return 0.0;//TODO: return error instead of value
         }
+        if(Derivative(obj_func, range(0))(0) > 0 ||
+        Derivative(obj_func, range(1))(0) < 0)
+        {
+            //try to flip values
+            Eigen::Vector2d buff = range;
+            range(0) = buff(1);
+            range(1) = buff(0);
+            //repeat the test
+                if(Derivative(obj_func, range(0))(0) > 0 ||
+            Derivative(obj_func, range(1))(0) < 0)
+            {
+                std::cout << "Bisection fail: f'(range(0)) > 0 and/or f'(range(1)) < 0 does not meet requirments also flipping procedure failed. Aborting..." << std::endl;
+                return 0.0;
+            }
+            //if test has been passed proceed with function
+        }
+
         //Set variables
         int n = 0;
         double c = 0;
+        
         //Check iterator to avoid infinite loop
         while(n <= max_iter)
         {
-            //Calcluate mid point
+            //Calcluate mid point of search space
             c = (range(0) + range(1)) / 2;
+            //Calculate derivative of a function
+            Eigen::Vector2d dfx = Derivative(obj_func,c);
+            
             //Solution statement
-            if(obj_func(c) == 0 || (range(1)-range(0))/2 < tolerance)
+            if(abs(dfx(0)) <= tolerance)
             {
                 return c;
             }
             //step counter up
             n++;
             //Set new, smaller interval
-            if(sgn(obj_func(c)) == sgn(obj_func(range(0))))
+            if(dfx(0) < 0)
             {
                 range(0) = c;
             }
