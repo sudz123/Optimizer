@@ -1,16 +1,10 @@
-// Macro for eigen
-#ifndef EIGEN_MATRIX_H
+#ifndef OPTIMIZER_H
+#define OPTIMIZER_H
+
+/* Includes */
 #include <Eigen/Dense>
-#endif
-
-// Macros for Optimizer
-#ifndef OPTIMIZE_GRAD_H
 #include "grad.h"
-#endif
-
-#ifndef OPTIMIZE_UTIL_H
 #include "util.h"
-#endif
 
 namespace Optimizer {
     
@@ -65,7 +59,11 @@ namespace Optimizer {
         while(k < M){
 
             if ( fx1 >= fx && fx <= fx2){
-                res << x1, x2;
+                if (x1 < x2)
+                    res << x1, x2;
+                else
+                    res << x2, x1;
+
                 break;
             }
 
@@ -188,7 +186,8 @@ namespace Optimizer {
         f2 = obj_func(x2);
 
         while (it < M && l > epsilon) {
-            if(f1 > f2){
+
+            if (f1 > f2) {
 
                 x = x2;
                 high = w1;
@@ -202,7 +201,7 @@ namespace Optimizer {
                 ++it;
                 
             }
-            else{
+            else {
 
                 x = x1;
                 low = w2;
@@ -221,6 +220,132 @@ namespace Optimizer {
         return x;
     }
 
+    double IntervalHalving (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Interval Halving method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+
+        double epsilon = 1e-5;
+        int it = 0, M = 500;
+        double x = (range(0) + range(1)) / 2;
+        double f1, f2, f, x1, x2, l;
+        l = range(1) - range(0);
+
+        while (it < M && l > epsilon) {
+
+            x1 = range(0) + l / 4;
+            x2 = range(1) - l/4;
+            f1 = obj_func(x1);
+            f2 = obj_func(x2);
+            f = obj_func(x);
+
+            if(f1 < f){
+                range(1) = x;
+                x = x1;
+            }
+            else if(f2 < f){
+                range(0) = x;
+                x = x2;
+            }
+            else{
+                range(0) = x1;
+                range(1) = x2;
+            }
+
+            l = range(1) -  range(0);
+            ++it;
+
+        }
+
+        return x;
+    }
+
+    double Fibonacci (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Fibonacci Search method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+        // Be careful not to set higher values of M as double might overflow (IMPORTANT)
+
+        int k = 2, M = 20;
+        double x = (range(0) + range(1)) / 2;
+        std::vector<int> fib = getFibonacci(M);
+        double l = range(1)-range(0), l_star, x1, x2, f1, f2;
+        l_star = ((double)fib[M-k] / (double)fib[M]) * l;
+
+        x1 = range(0) + l_star;
+        x2 = range(1) - l_star;
+        f1 = obj_func(x1);
+        f2 = obj_func(x2);
+
+        while(k!=M){
+
+            ++k;
+            l_star = ((double)fib[M-k] / (double)fib[M]) * l;
+
+            if (f1 < f2) {
+
+                range(1) = x2;
+                x = x1;
+                x2 = x1;
+                x1 = range(0) + l_star;
+                f2 = f1;
+                f1 = obj_func(x1);
+
+            }
+            else {
+
+                range(0) = x1;
+                x = x2;
+                x1 = x2;
+                x2 = range(1) - l_star;
+                f1 = f2;
+                f2 = obj_func(x2);
+
+            }
+
+        }
+
+        return x;
+    }
+
+    double Secant (std::function<double (double)> obj_func, Eigen::Vector2d range) {
+        // The Secant method
+        // Input is a std::function(of the objective function) and an Eigen::Vector2d
+        // This vector has the range over which the algorithm is evaluated
+        // Output is a the Optimum point, type double
+
+        double epsilon = 1e-5;
+        int it = 0, M = 500;
+        double x;
+        Eigen::Vector2d f1, f2, f;
+        f2 = Derivative(obj_func, range(1));
+        f1 = Derivative(obj_func, range(0));
+
+        while(it < M) {
+
+            x = range(1) - f2(0) * (range(1) - range(0))/(f2(0) - f1(0));
+            f = Derivative(obj_func, x);
+            if(std::abs(f(0)) < epsilon) {
+                break;
+            }
+            else if(f(0) < 0) {
+                range(0) = x;
+                f1 = f;
+            }
+            else {
+                range(1) = x;
+                f2 = f;
+            }
+            ++it;
+        }
+
+        return x;
+    }
+
+
+
     enum class BM {
         // Enum class which users can use to select the bracketing method
         // B_PHASE is for Bounding Phase
@@ -234,7 +359,8 @@ namespace Optimizer {
         // N_RAP is for Newton Raphson
         // G_search is for Golden Section Search
         N_RAP,
-        G_SEARCH
+        G_SEARCH,
+        I_HALVE
     };
 
     double SVOptimize (std::function<double (double)> obj_func,
@@ -267,6 +393,8 @@ namespace Optimizer {
             case UDM::N_RAP : ans = NewtonRapshon(obj_func, range);
                 break;
             case UDM::G_SEARCH : ans = GoldenSection(obj_func, range);
+                break;
+            case UDM::I_HALVE : ans = IntervalHalving(obj_func, range);
                 break;
             default : ans = GoldenSection(obj_func, range);
 
@@ -515,3 +643,5 @@ namespace Optimizer {
     }
 
 }
+
+#endif   /* OPTIMIZER_H */

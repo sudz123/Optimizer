@@ -1,19 +1,9 @@
-// Macro for Eigen
-#ifndef EIGEN_MATRIX_H
-#include <Eigen/Dense>
-#endif
-
-// Macro for Optimizer
 #ifndef OPTIMIZE_UTIL_H
 #define OPTIMIZE_UTIL_H
-#endif
 
-//Libs for file operations
-#ifndef _IOSTREAM_
-#include <iostream>
-#endif
-
+#include <Eigen/Dense>
 #include <fstream>
+#include <vector>
 
 namespace Optimizer {
 
@@ -78,9 +68,6 @@ namespace Optimizer {
     };
 
 
-
-
-   
     template <typename T> int sgn(T val) {
     //Signum function,
     //Value range from -1 to 1
@@ -92,3 +79,21 @@ namespace Optimizer {
 
 
 }
+
+    std::vector<int> getFibonacci(int n){
+
+        int f0 = 1, f1 = 1;
+        std::vector<int> fib = {f0, f1};
+
+        for(int i=2; i <= n+1; ++i){
+            f1 = f1 + f0;
+            f0 = f1 - f0;
+            fib.push_back(f1);
+        }
+ 
+        return fib;
+    }
+}
+
+#endif  /* OPTIMIZE_UTIL_H */
+
