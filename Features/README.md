@@ -8,13 +8,13 @@ These are the features this library would be providing :
     - Bounding Phase (Implemented)
   - Region Elimination Methods
     - Interval Halving
-    - Fibonnaci Search
+    - Fibonnaci Search (Implemented)
     - Golden Section Search (Implemented)
   - Point Estimation Methods
     - Succesive Quadratic Estimation
   - Gradient-based Methods
     - Newton-Raphson (Implemented)
-    - Bisection
+    - Bisection (Implemented)
     - Secant
     - Cubic Search
 

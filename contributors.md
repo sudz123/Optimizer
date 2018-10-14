@@ -23,3 +23,4 @@
 - [Debodirno Chandra](https://github.com/debodirno)
     - [LinkedIn](https://www.linkedin.com/in/debodirno/)
 - [Madoxen](https://github.com/Madoxen)
+- [Zatin Meraz](https://github.com/ZatinMe)
