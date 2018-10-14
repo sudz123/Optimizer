@@ -20,7 +20,7 @@ double Matyas (Vector2d x) {
 
 double Himmelblau(VectorXd x)
 {
-    return pow((pow(x(0,0),2) + x(0,1) -11),2) + pow((x(0,0) + pow(x(0,1),2) - 7),2);
+    return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
 }
 
 int main () {
@@ -103,11 +103,10 @@ int main () {
 
     cout << "Testing Simplex method Himmelblau function with two variables" << endl;
     cout << "The Optimal Point obtained is: " << endl;
-    VectorXd vec(1,2);
-    vec(0,0) = 1;
-    vec(0,1) = 2;
-    cout << vec.rows() << endl;
-    cout << SimplexSearch(Himmelblau,vec,2,0.5,1) << endl;
+    VectorXd vec(2);
+    vec(0) = 1;
+    vec(1) = 2;
+    cout << SimplexSearch(Himmelblau,vec,1.1,0.5,1,10000) << endl;
     
 
     cout << "Testing Data Save Methods" << endl;
