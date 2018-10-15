@@ -595,7 +595,7 @@ namespace Optimizer {
 
     Eigen::VectorXd ConjugateGradient (std::function<double (Eigen::VectorXd)> obj_func,
                                         Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5,
-                                        double epsilon3 = 1e-2, BM b_meth = BM::B_PHASE, UDM u_search = UDM::N_RAP) {
+                                        double epsilon3 = 1e-3, BM b_meth = BM::B_PHASE, UDM u_search = UDM::N_RAP) {
         // This function does the multi-variable optimization using the Conjugate Gradient algorithm
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
@@ -618,8 +618,6 @@ namespace Optimizer {
         Eigen::VectorXd S = - G, S_prev = S;
 
         while (it < M) {
-
-
             std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
             double alpha = SVOptimize(func, 0.0, b_meth, u_search);
 			hist.push(x);
@@ -639,8 +637,14 @@ namespace Optimizer {
 
             S_prev = S;
             S = - G + (G.squaredNorm()/G_prev.squaredNorm()) * S_prev;
-			if (acos((double)(S.transpose() * S_prev)/(S.norm() * S_prev.norm())) < epsilon3)
-				return ConjugateGradient(obj_func, hist.front(), M, epsilon1, epsilon2, epsilon3, b_meth, u_search);
+			if (acos((double)(S.transpose() * S_prev)/(S.norm() * S_prev.norm())) < epsilon3 && hist.size() == 4) {
+				x = hist.front();
+				while (!hist.empty())
+					hist.pop();
+
+				G = Gradient(obj_func, x), G_prev = G;
+				S = -G, S_prev = S;
+			}
         }
 
         return x;

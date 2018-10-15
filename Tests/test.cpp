@@ -110,7 +110,7 @@ int main () {
 
     cout << "Testing Conjugate Gradient method on Dixon function with initial point (-3, 8, 0)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
-    cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 20000) << endl;
+    cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 30000) << endl;
 
     cout << "Testing Simplex method Himmelblau function with two variables" << endl;
     cout << "The Optimal Point obtained is: " << endl;
