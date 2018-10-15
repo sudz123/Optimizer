@@ -25,6 +25,11 @@ double Dixon (VectorXd x) {
 	return val;
 }
 
+double Himmelblau(Vector2d x)
+{
+    return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
+}
+
 int main () {
 
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
@@ -106,6 +111,13 @@ int main () {
     cout << "Testing Conjugate Gradient method on Dixon function with initial point (-3, 8, 0)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 20000) << endl;
+
+    cout << "Testing Simplex method Himmelblau function with two variables" << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    VectorXd vec(2);
+    vec(0) = 1;
+    vec(1) = 2;
+    cout << SimplexSearch(Himmelblau,vec,10000, 2, 0.5) << endl;
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;
