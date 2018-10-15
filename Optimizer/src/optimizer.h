@@ -6,6 +6,8 @@
 #include "grad.h"
 #include "util.h"
 
+#include <vector>
+
 namespace Optimizer {
     
     Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x) {
@@ -125,7 +127,7 @@ namespace Optimizer {
             Eigen::Vector2d dfx = Derivative(obj_func,c);
             
             //Solution statement
-            if(abs(dfx(0)) <= tolerance)
+            if(std::abs(dfx(0)) <= tolerance)
             {
                 return c;
             }
@@ -641,6 +643,150 @@ namespace Optimizer {
 
         return x;
     }
+
+
+    Eigen::VectorXd SimplexSearch(std::function<double(Eigen::VectorXd)> obj_func, Eigen::Vector2d var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
+        // This function does the multi-variable optimization using the Simplex Search (Nedler-Mead) algorithm
+        // Input parameters are :
+        // obj_func - multivariable function that this algorithm is searching optimum for
+        // var - point of initial search
+        // gamma - Expansion coefficient needs be > 1
+        // beta - shrink coefficient needs to be in (0,1) range
+        // epsilon - termination criteria variable
+        // M - variable used to terminate algorithm after number of iterations
+        // Returns: Eigen::VectorXd of n-variables as passed in var
+
+        //param check
+        if(gamma <= 1)
+        {
+            std::cout << "SimplexSearch: Gamma parameter should be > 1, aborting...";
+            Eigen::VectorXd null_vec(1);
+            null_vec(0) = 0;
+            return null_vec;
+        }
+        if(beta > 1 || beta < 0)
+        {
+            std::cout << "SimplexSearch: Beta parameter should be in (0,1) range. Aborting...";
+            Eigen::VectorXd null_vec(1);
+            null_vec(0) = 0;
+            return null_vec;
+        }
+        //Creating initial simplex: see theory pdf p 114 for details
+        //Get number of dimensions/variables 
+        int n = var.size();
+        double scale = 0.2;
+        double delta = 0;
+        //calculate delta value see 114 for details appendix 3 
+        if(n == 3)
+        {
+            delta = 3;
+        }
+        else
+        {
+            delta = (sqrt(n+1)-2.0)/((double)(n-3));
+        }
+        //Create initial simples, consisting of n+1  n-dimensional points 
+        Eigen::MatrixXd points(n+1,n);
+        std::vector<std::pair<double,int>> func_vals;
+        //Add base point to simplex vector
+       // std::cout << points.rows() << std::endl;
+       // std::cout << var << std::endl;
+        points.row(0) = var;
+
+        double C = 2.4;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n-1; j++)
+            {
+                if(i == j)
+                {
+                    points(i,j) = points(0,j) + C;
+                }
+                else
+                {
+                    points(i,j) = points(0,j) + C*delta;
+                }
+                //Calculate function value at currently processed points
+                func_vals.push_back(std::make_pair(obj_func(points.row(i)), i));
+            }
+        }
+
+        int iter = 0;
+        while(true)
+        {
+            //STEP 2
+            //Find worst point, best point, next to worst point
+            //Sort func_val sector and assign special values
+            std::sort(func_vals.begin(), func_vals.end()-1);
+            //worst point (highest)
+            Eigen::VectorXd xh(n);
+            xh.col(0) = points.row(func_vals.back().second);
+            //best point (lowest)
+            Eigen::VectorXd xl(n);
+            xl.col(0) = points.row(func_vals[0].second);
+            //next to worst point
+            Eigen::VectorXd xg(n);
+            xg.col(0) = points.row(func_vals[func_vals.size()-2].second);
+            //central point 1 row with n variabvles
+            Eigen::VectorXd xc(n);
+            //i < N because we exclude worst point from this sum(the worst point is also the last point in this vectpr)
+         
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < n-1; j++)
+                {
+                    xc(j) += points(func_vals[i].second, n-1);
+                }
+            }
+            //multiply every variable of xc by 1/n
+            xc *= 1/n;
+            //STEP 3
+            //Check for expansion, reflection and contraction in two types
+            Eigen::VectorXd x_new(n);
+            //Calculate reflected point
+            Eigen::VectorXd xr(n);
+            xr = 2*xc-xh;
+            x_new = xr;
+            //define function values to avoid unnecessary function calls
+            double fxr = obj_func(xr);
+            double fxl = obj_func(xl);
+            double fxg = obj_func(xg);
+            double fxh = obj_func(xh);
+            if(fxr < fxl)
+            {
+                x_new = (1+gamma)*xc-gamma*xh;
+            }
+            else if(fxr >= fxh)
+            {
+                x_new = (1-beta)*xc + beta*xh;
+            }
+            else if(fxg < fxr && fxr < fxh)
+            {
+                x_new = (1+beta)*xc - beta*xh;
+            }
+            xh = x_new;
+            //STEP 4
+            //Check termination
+            double termination_sum = 0;
+            for(int i = 0; i < n-1; i++)
+            {
+                termination_sum += pow(obj_func(points.row(i)) - obj_func(xc), 2) / (n+1);
+            }
+            if(pow(termination_sum,0.5) <= epsilon)
+            {
+                //return optimal point
+                return x_new;
+            }
+            iter++;
+            if(iter >= M)
+            {  
+                std::cout << "SimplexSearch: exceeded number of iterations, terminating" << std::endl;
+                return x_new;
+            }
+        }
+
+    }
+    
 
 }
 
