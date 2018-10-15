@@ -18,7 +18,7 @@ double Matyas (Vector2d x) {
     return 0.26 * (pow(x(0),2) + pow(x(1),2)) - 0.48 * x(0) * x(1);
 }
 
-double Himmelblau(VectorXd x)
+double Himmelblau(Vector2d x)
 {
     return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
 }
@@ -106,7 +106,7 @@ int main () {
     VectorXd vec(2);
     vec(0) = 1;
     vec(1) = 2;
-    cout << SimplexSearch(Himmelblau,vec,1.1,0.5,1,10000) << endl;
+    cout << SimplexSearch(Himmelblau,vec,10000, 2, 0.5) << endl;
     
 
     cout << "Testing Data Save Methods" << endl;

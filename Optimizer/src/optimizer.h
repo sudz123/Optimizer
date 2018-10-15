@@ -8,8 +8,6 @@
 
 #include <vector>
 
-
-
 namespace Optimizer {
     
     Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x) {
@@ -129,7 +127,7 @@ namespace Optimizer {
             Eigen::Vector2d dfx = Derivative(obj_func,c);
             
             //Solution statement
-            if(abs(dfx(0)) <= tolerance)
+            if(std::abs(dfx(0)) <= tolerance)
             {
                 return c;
             }
@@ -647,16 +645,15 @@ namespace Optimizer {
     }
 
 
-    Eigen::VectorXd SimplexSearch(std::function<double(Eigen::VectorXd)> obj_func, Eigen::Vector2d var ,double gamma, double beta, double termination, int iter_termination)
-    {
-        // This function does the multi-variable optimization using the Simple Search (Nedler-Mead) algorithm
+    Eigen::VectorXd SimplexSearch(std::function<double(Eigen::VectorXd)> obj_func, Eigen::Vector2d var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
+        // This function does the multi-variable optimization using the Simplex Search (Nedler-Mead) algorithm
         // Input parameters are :
         // obj_func - multivariable function that this algorithm is searching optimum for
         // var - point of initial search
         // gamma - Expansion coefficient needs be > 1
         // beta - shrink coefficient needs to be in (0,1) range
-        // termination - termination criteria variable
-        // iter-termination - variable used to terminate algorithm after number of iterations
+        // epsilon - termination criteria variable
+        // M - variable used to terminate algorithm after number of iterations
         // Returns: Eigen::VectorXd of n-variables as passed in var
 
         //param check
@@ -675,10 +672,8 @@ namespace Optimizer {
             return null_vec;
         }
         //Creating initial simplex: see theory pdf p 114 for details
-        //TODO: decide if scale factor should be availble
         //Get number of dimensions/variables 
         int n = var.size();
-        //std::cout << "DEBUG: number of dimensions: " << n << std::endl;
         double scale = 0.2;
         double delta = 0;
         //calculate delta value see 114 for details appendix 3 
@@ -777,13 +772,13 @@ namespace Optimizer {
             {
                 termination_sum += pow(obj_func(points.row(i)) - obj_func(xc), 2) / (n+1);
             }
-            if(pow(termination_sum,0.5) <= termination)
+            if(pow(termination_sum,0.5) <= epsilon)
             {
                 //return optimal point
                 return x_new;
             }
             iter++;
-            if(iter >= iter_termination)
+            if(iter >= M)
             {  
                 std::cout << "SimplexSearch: exceeded number of iterations, terminating" << std::endl;
                 return x_new;
