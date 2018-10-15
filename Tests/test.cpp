@@ -18,6 +18,13 @@ double Matyas (Vector2d x) {
     return 0.26 * (pow(x(0),2) + pow(x(1),2)) - 0.48 * x(0) * x(1);
 }
 
+double Dixon (VectorXd x) {
+	double val = 0;
+	for (int i = 0; i < x.size() - 1; ++i)
+		val += 100 * pow(x(i + 1) - pow(x(i), 2), 2) + pow(x(i) - 1, 2);
+	return val;
+}
+
 int main () {
 
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
@@ -95,6 +102,10 @@ int main () {
     cout << "Testing Conjugate Gradient method on Matyas function with 2 variables and initial point (-3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Matyas, Vector2d(-3, 7)) << endl;
+
+    cout << "Testing Conjugate Gradient method on Dixon function with initial point (-3, 8, 0)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 20000) << endl;
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;
