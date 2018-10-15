@@ -674,23 +674,21 @@ namespace Optimizer {
         //Creating initial simplex: see theory pdf p 114 for details
         //Get number of dimensions/variables 
         int n = var.size();
-        double scale = 0.2;
         double delta = 0;
         //calculate delta value see 114 for details appendix 3 
         if(n == 3)
         {
-            delta = 3;
+            delta = 0.25;
         }
         else
         {
             delta = (sqrt(n+1)-2.0)/((double)(n-3));
         }
-        //Create initial simples, consisting of n+1  n-dimensional points 
+        //Create initial simplexes, consisting of n+1 n-dimensional points 
         Eigen::MatrixXd points(n+1,n);
         std::vector<std::pair<double,int>> func_vals;
         //Add base point to simplex vector
-       // std::cout << points.rows() << std::endl;
-       // std::cout << var << std::endl;
+
         points.row(0) = var;
 
         double C = 2.4;
