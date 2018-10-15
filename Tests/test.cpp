@@ -18,6 +18,11 @@ double Matyas (Vector2d x) {
     return 0.26 * (pow(x(0),2) + pow(x(1),2)) - 0.48 * x(0) * x(1);
 }
 
+double Himmelblau(VectorXd x)
+{
+    return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
+}
+
 int main () {
 
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
@@ -95,6 +100,14 @@ int main () {
     cout << "Testing Conjugate Gradient method on Matyas function with 2 variables and initial point (-3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Matyas, Vector2d(-3, 7)) << endl;
+
+    cout << "Testing Simplex method Himmelblau function with two variables" << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    VectorXd vec(2);
+    vec(0) = 1;
+    vec(1) = 2;
+    cout << SimplexSearch(Himmelblau,vec,1.1,0.5,1,10000) << endl;
+    
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;

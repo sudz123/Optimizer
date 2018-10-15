@@ -75,12 +75,7 @@ namespace Optimizer {
     //Works on ints, floats, doubles, unsigned base numerical type and custom types constructible from integer
     return (T(0) < val) - (val < T(0));
 }
-
-
-
-}
-
-    std::vector<int> getFibonacci(int n){
+        std::vector<int> getFibonacci(int n){
 
         int f0 = 1, f1 = 1;
         std::vector<int> fib = {f0, f1};
@@ -93,7 +88,12 @@ namespace Optimizer {
  
         return fib;
     }
+
+
 }
+
+
+
 
 #endif  /* OPTIMIZE_UTIL_H */
 
