@@ -5,11 +5,13 @@
 #include <Eigen/Dense>
 #include "grad.h"
 #include "util.h"
+#include <iostream>
+#include <queue>
 
 #include <vector>
 
 namespace Optimizer {
-    
+
     Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x) {
         // The Bounding Phase method
         // Input is a std::function(of the objective function) and the variable of type double
@@ -75,23 +77,23 @@ namespace Optimizer {
             fx1 = fx;
             fx = fx2;
             fx2 = obj_func(x2);
-        
-        } 
+
+        }
 
         return res;
     }
 
 
-    
+
     double Bisection(std::function<double (double)> obj_func, Eigen::Vector2d range, double tolerance, int max_iter)
     {
-    //Bisection method - 
-    //Input: std::function - function object; 
+    //Bisection method -
+    //Input: std::function - function object;
     //range - range over which algorithm will be evaluated
     //tolerance - sets maximum deviation from root f(x) = 0
     //max_iter - maximum iteration before operation cancelation
-    //Output: value which differs from a root of f(x)=0 by less than tolerance value 
-     
+    //Output: value which differs from a root of f(x)=0 by less than tolerance value
+
         if(range(0) == range(1))
         {
             std::cout << "Bisection fail: endpoint values cannot be equal to each other." << std::endl;
@@ -117,7 +119,7 @@ namespace Optimizer {
         //Set variables
         int n = 0;
         double c = 0;
-        
+
         //Check iterator to avoid infinite loop
         while(n <= max_iter)
         {
@@ -125,7 +127,7 @@ namespace Optimizer {
             c = (range(0) + range(1)) / 2;
             //Calculate derivative of a function
             Eigen::Vector2d dfx = Derivative(obj_func,c);
-            
+
             //Solution statement
             if(std::abs(dfx(0)) <= tolerance)
             {
@@ -201,7 +203,7 @@ namespace Optimizer {
                 f1 = f2;
                 f2 = obj_func(x2);
                 ++it;
-                
+
             }
             else {
 
@@ -473,7 +475,6 @@ namespace Optimizer {
         // u_search - Selects the Unidirectional search method, type enum class UDM
         // Output is of type Eigen::VectorXd, it is the optimised point
 
-        int n = x.size();
         int it = 0;
 
         Eigen::VectorXd x_prev = x;
@@ -520,14 +521,13 @@ namespace Optimizer {
         // u_search - Selects the Unidirectional search method, type enum class UDM
         // Output is of type Eigen::VectorXd, it is the optimised point
 
-        int n = x.size();
         int it = 0;
 
         Eigen::VectorXd x_prev = x;
         Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
         Eigen::MatrixXd H = Hessian(obj_func, x);
         Eigen::VectorXd S = - H.inverse() * G;
-        
+
         while (it < M){
 
             if (G.norm() < epsilon1)
@@ -569,7 +569,7 @@ namespace Optimizer {
         Eigen::MatrixXd I = Eigen::MatrixXd::Identity(n, n);
         Eigen::MatrixXd H = Hessian(obj_func, x);
         Eigen::VectorXd S;
-        
+
         while (it < M){
 
             if (G.norm() < epsilon)
@@ -595,7 +595,7 @@ namespace Optimizer {
 
     Eigen::VectorXd ConjugateGradient (std::function<double (Eigen::VectorXd)> obj_func,
                                         Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5,
-                                        double epsilon3 = 1e-5, BM b_meth = BM::B_PHASE, UDM u_search = UDM::N_RAP) {
+                                        double epsilon3 = 1e-2, BM b_meth = BM::B_PHASE, UDM u_search = UDM::N_RAP) {
         // This function does the multi-variable optimization using the Conjugate Gradient algorithm
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
@@ -608,29 +608,27 @@ namespace Optimizer {
         // u_search - Selects the Unidirectional search method, type enum class UDM
         // Output is of type Eigen::VectorXd, it is the optimised point
 
-        int n = x.size();
-        int it = 0;
+		//TODO Check best value for epsilon3
 
-        Eigen::VectorXd x_prev = x;
+        int it = 0;
+		std::queue<Eigen::VectorXd> hist;
+		hist.push(x);
+
         Eigen::VectorXd G = Gradient(obj_func, x), G_prev = G;
         Eigen::VectorXd S = - G, S_prev = S;
-        std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
-        double alpha = SVOptimize(func, 0.0, b_meth, u_search);
-        x += alpha * S;
-        G = Gradient(obj_func, x);
 
-        while (it < M){
+        while (it < M) {
 
-            S = - G + (G.squaredNorm()/G_prev.squaredNorm()) * S_prev;
 
             std::function<double (double)> func = [obj_func, x, S] (double a)->double { return obj_func(x + a * S); };
             double alpha = SVOptimize(func, 0.0, b_meth, u_search);
-            x_prev = x;
-            S_prev = S;
+			hist.push(x);
+			if (hist.size() > 4)
+				hist.pop();
             x += alpha * S;
             ++it;
 
-            if ((x - x_prev).norm() / x_prev.norm() < epsilon1)
+            if ((x - hist.back()).norm() / hist.back().norm() < epsilon1)
                 break;
 
             G_prev = G;
@@ -639,6 +637,10 @@ namespace Optimizer {
             if (G.norm() < epsilon2)
                 break;
 
+            S_prev = S;
+            S = - G + (G.squaredNorm()/G_prev.squaredNorm()) * S_prev;
+			if (acos((double)(S.transpose() * S_prev)/(S.norm() * S_prev.norm())) < epsilon3)
+				return ConjugateGradient(obj_func, hist.front(), M, epsilon1, epsilon2, epsilon3, b_meth, u_search);
         }
 
         return x;

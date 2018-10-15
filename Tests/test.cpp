@@ -18,6 +18,13 @@ double Matyas (Vector2d x) {
     return 0.26 * (pow(x(0),2) + pow(x(1),2)) - 0.48 * x(0) * x(1);
 }
 
+double Dixon (VectorXd x) {
+	double val = 0;
+	for (int i = 0; i < x.size() - 1; ++i)
+		val += 100 * pow(x(i + 1) - pow(x(i), 2), 2) + pow(x(i) - 1, 2);
+	return val;
+}
+
 double Himmelblau(Vector2d x)
 {
     return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
@@ -101,13 +108,16 @@ int main () {
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Matyas, Vector2d(-3, 7)) << endl;
 
+    cout << "Testing Conjugate Gradient method on Dixon function with initial point (-3, 8, 0)." << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 20000) << endl;
+
     cout << "Testing Simplex method Himmelblau function with two variables" << endl;
     cout << "The Optimal Point obtained is: " << endl;
     VectorXd vec(2);
     vec(0) = 1;
     vec(1) = 2;
     cout << SimplexSearch(Himmelblau,vec,10000, 2, 0.5) << endl;
-    
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;
