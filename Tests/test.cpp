@@ -128,4 +128,5 @@ int main () {
     point1.path = Hessian(SumSquares, Vector3d(3, 3, 4));
     point1.SaveAsTxt();
     point1.SaveAsCsv();
+    cout << "TEST SUCCESSFUL" << endl;
 }
