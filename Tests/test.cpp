@@ -30,6 +30,18 @@ double Himmelblau(Vector2d x)
     return pow((pow(x(0),2) + x(1) -11),2) + pow((x(0) + pow(x(1),2) - 7),2);
 }
 
+double func_cust(Vector2d x) {
+    return pow(x(0)-10, 3) + pow(x(1)-20, 3);
+}
+
+double ineq1(Vector2d x){
+    return - (pow(x(0)-5, 2) + pow(x(1)-5, 2) + 100);
+}
+
+double ineq2(Vector2d x){
+    return - (pow(x(0)-5, 2) + pow(x(1)-5, 2) - 82.81);
+}
+
 int main () {
 
     cout << "Using Function: (x + 10)^2 for single variable algorithms testing." << endl;
@@ -116,12 +128,20 @@ int main () {
     cout << "The Optimal Point obtained is: " << endl;
     cout << ConjugateGradient(Dixon, Vector3d(-3, 8, 0), 30000) << endl;
 
-    cout << "Testing Simplex method Himmelblau function with two variables" << endl;
+    cout << "Testing Simplex method on the Himmelblau function with two variables" << endl;
     cout << "The Optimal Point obtained is: " << endl;
     VectorXd vec(2);
     vec(0) = 1;
     vec(1) = 2;
     cout << Simplex(Himmelblau,vec,10000, 2, 0.5) << endl;
+
+    cout << "Testing Penalty Function Method with custom function" << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    Vector2d x1(50, 50);
+    vector<std::function<double (Eigen::VectorXd)>> eq_const;
+    vector<std::function<double (Eigen::VectorXd)>> ineq_const{ineq1, ineq2};
+    cout << PenaltyConstrained(func_cust, x1, eq_const, ineq_const, 0, 0, 0.1, 10) << endl;
+
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;
