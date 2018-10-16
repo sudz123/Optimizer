@@ -24,3 +24,5 @@
     - [LinkedIn](https://www.linkedin.com/in/debodirno/)
 - [Madoxen](https://github.com/Madoxen)
 - [Zatin Meraz](https://github.com/ZatinMe)
+- [Sagar Ghimire](https://github.com/gmrsagar)
+    - [LinkedIn](https://www.linkedin.com/in/gmrsagar
