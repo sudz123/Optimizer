@@ -146,6 +146,7 @@ namespace Optimizer {
             }
         }
         std::cout << "Bisection fail: Max number of iteration exceeded." << std::endl;
+        return 0.0;
     }
 
     double NewtonRapshon (std::function<double (double)> obj_func, Eigen::Vector2d range) {
@@ -362,9 +363,26 @@ namespace Optimizer {
         // Enum class which users can use to select the unidirectional search method
         // N_RAP is for Newton Raphson
         // G_search is for Golden Section Search
+        // I_HALVE is for Interval Halving
         N_RAP,
         G_SEARCH,
         I_HALVE
+    };
+
+    enum class MVO {
+        // Enum class which users can use to select the multivariable search method
+        // V_METRIC is for variable metric or DFP
+        // CAUCHY is for Cauchy's Algorithm
+        // Newton is for Newton's Algorithm
+        // Marquardt is for Marquardt' Algorithm
+        // Simplex is for Simplex Search
+        // C_GRADIENT if for Conjugate Gradient
+        V_METRIC,
+        CAUCHY,
+        NEWTON,
+        MARQUARDT,
+        SIMPLEX,
+        C_GRADIENT
     };
 
     double SVOptimize (std::function<double (double)> obj_func,
@@ -374,8 +392,8 @@ namespace Optimizer {
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
         // x - Our initial point of type double
-        // bracketing - Tells us which bracketing method to use. Is of type std::string
-        // unidir - Tells us which uni-directional search to use. Is of type std::string
+        // b_meth - Tells us which bracketing method to use.
+        // u_search - Tells us which uni-directional search to use.
         // This function returns the optimum point(ans) of type double
 
         Eigen::Vector2d range;
@@ -650,8 +668,8 @@ namespace Optimizer {
         return x;
     }
 
-
-    Eigen::VectorXd SimplexSearch(std::function<double(Eigen::VectorXd)> obj_func, Eigen::Vector2d var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
+    // NOT WORKING
+    Eigen::VectorXd Simplex (std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
         // This function does the multi-variable optimization using the Simplex Search (Nedler-Mead) algorithm
         // Input parameters are :
         // obj_func - multivariable function that this algorithm is searching optimum for
@@ -662,19 +680,18 @@ namespace Optimizer {
         // M - variable used to terminate algorithm after number of iterations
         // Returns: Eigen::VectorXd of n-variables as passed in var
 
+        Eigen::VectorXd null_vec(1);
+        null_vec(0) = 0;
+
         //param check
         if(gamma <= 1)
         {
             std::cout << "SimplexSearch: Gamma parameter should be > 1, aborting...";
-            Eigen::VectorXd null_vec(1);
-            null_vec(0) = 0;
             return null_vec;
         }
         if(beta > 1 || beta < 0)
         {
             std::cout << "SimplexSearch: Beta parameter should be in (0,1) range. Aborting...";
-            Eigen::VectorXd null_vec(1);
-            null_vec(0) = 0;
             return null_vec;
         }
         //Creating initial simplex: see theory pdf p 114 for details
@@ -788,6 +805,58 @@ namespace Optimizer {
                 return x_new;
             }
         }
+
+        return null_vec;
+    }
+
+    Eigen::VectorXd MVOptimize (std::function<double (Eigen::VectorXd)> obj_func,
+            Eigen::VectorXd x, MVO m_opt = MVO::MARQUARDT, BM b_meth = BM::B_PHASE,
+            UDM u_search = UDM::N_RAP) {
+        // This function does the Multi-variable optimzation
+        // Input parameters are :
+        // obj_func - The std::function variable containing our objective function
+        // x - Our initial point of type Eigen::VectorXd
+        // m_opt - Tells us which multi-variable search algorithm to use
+        // b_meth - Tells us which bracketing method to use.
+        // u_search - Tells us which uni-directional search to use.
+        // This function returns the optimum point(ans) of type Eigen::VectorXd
+
+        Eigen::VectorXd ans;
+
+        switch (m_opt) {
+
+            case MVO::V_METRIC : ans = DFP(obj_func, x);
+                break;
+            case MVO::CAUCHY : ans = Cauchy(obj_func, x);
+                break;
+            case MVO::NEWTON : ans = Newton(obj_func, x);
+                break;
+            case MVO::MARQUARDT : ans = Marquardt(obj_func, x);
+                break;
+            case MVO::SIMPLEX : ans = Simplex(obj_func, x);
+                break;
+            case MVO::C_GRADIENT : ans = ConjugateGradient(obj_func, x);
+                break;
+            default : ans = Marquardt(obj_func, x);
+
+        }
+
+        return ans;
+    }
+
+    // TODO
+    Eigen::VectorXd PenaltyConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+                                       std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
+
+        return x;
+
+    }
+
+    // TODO
+    Eigen::VectorXd MultiplierConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+                                        std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
+
+        return x;
 
     }
     
