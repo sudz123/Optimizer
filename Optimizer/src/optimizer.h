@@ -880,7 +880,7 @@ namespace Optimizer {
                                         std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
                                        std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, double Req, 
                                        double ceq, double Rineq, double cineq,
-                                       PF p_func_eq = PF::BRACKET, PF p_func_ineq = PF::PARABOLIC, int M = 10000){
+                                       PF p_func_eq = PF::BRACKET, PF p_func_ineq = PF::PARABOLIC, int M = 100){
 
         double f_new, f;
         Eigen::VectorXd x_new = x;
