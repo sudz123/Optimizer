@@ -681,7 +681,8 @@ namespace Optimizer {
     }
 
     // NOT WORKING
-    Eigen::VectorXd Simplex (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
+    Eigen::VectorXd Simplex (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd var, 
+                            int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
         // This function does the multi-variable optimization using the Simplex Search (Nedler-Mead) algorithm
         // Input parameters are :
         // obj_func - multivariable function that this algorithm is searching optimum for
@@ -874,18 +875,48 @@ namespace Optimizer {
 
         }
     }
+    
+    Eigen::VectorXd PenaltyConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, 
+                                        std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
+                                       std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, double Req, 
+                                       double ceq, double Rineq, double cineq,
+                                       PF p_func_eq = PF::BRACKET, PF p_func_ineq = PF::PARABOLIC, int M = 10000){
 
-    // TODO
-    Eigen::VectorXd PenaltyConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
-                                       std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
+        double f_new, f;
+        Eigen::VectorXd x_new = x;
 
-        return x;
+        for(int i=0; i<M; ++i){
+
+            std::function<double (Eigen::VectorXd)> func = [Req, Rineq, p_func_eq, p_func_ineq, obj_func, x, ineq_const, eq_const] (Eigen::VectorXd x)->double { 
+                return obj_func(x) + GetPenalty(Req, x, eq_const, p_func_eq) + GetPenalty(Rineq, x, ineq_const, p_func_ineq); };
+
+            if(i != 0) {
+                f = f_new;
+                x = x_new;
+            }
+
+            x_new = MVOptimize(func, x);
+            f_new = func(x_new);
+
+            if(i != 0 && std::abs(f_new - f) <= 1e-5)
+                break;
+            else {
+                Req *= ceq;
+                Rineq *= cineq;
+            }
+
+
+
+        }
+
+        return x_new;
 
     }
 
     // TODO
-    Eigen::VectorXd MultiplierConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
-                                        std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
+    Eigen::VectorXd MultiplierConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x,
+                                            std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+                                            std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
 
         return x;
 
