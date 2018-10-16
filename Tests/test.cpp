@@ -84,6 +84,10 @@ int main () {
 
     Vector3d x(4, -3, 7);
 
+    cout << "Testing MVOptimize on SumSquares with initial point (4, -3, 7)." << endl;
+    cout << "The Optimal Point obtained is: ";
+    cout << MVOptimize(SumSquares, x, MVO::NEWTON) << endl;
+
     cout << "Testing DFP on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
     cout << DFP(SumSquares, x) << endl;
@@ -117,7 +121,7 @@ int main () {
     VectorXd vec(2);
     vec(0) = 1;
     vec(1) = 2;
-    cout << SimplexSearch(Himmelblau,vec,10000, 2, 0.5) << endl;
+    cout << Simplex(Himmelblau,vec,10000, 2, 0.5) << endl;
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;
