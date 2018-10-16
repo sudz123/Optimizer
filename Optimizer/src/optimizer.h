@@ -681,7 +681,7 @@ namespace Optimizer {
     }
 
     // NOT WORKING
-    Eigen::VectorXd Simplex (std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
+    Eigen::VectorXd Simplex (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd var, int M = 1000, double gamma = 2, double beta = 0.5, double epsilon = 1e-5) {
         // This function does the multi-variable optimization using the Simplex Search (Nedler-Mead) algorithm
         // Input parameters are :
         // obj_func - multivariable function that this algorithm is searching optimum for
@@ -856,8 +856,27 @@ namespace Optimizer {
         return ans;
     }
 
+    double GetPenalty(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints, PF p_func = PF::BRACKET){
+        
+        switch (p_func) {
+
+            case PF::PARABOLIC: return Parabolic(R, x, constraints);
+                break;
+            case PF::I_BARRIER : return InfiniteBarrier(R, x, constraints);
+                break;
+            case PF::LOG : return Log(R, x, constraints);
+                break;
+            case PF::INVERSE : return Inverse(R, x, constraints);
+                break;
+            case PF::BRACKET : return Bracket(R, x, constraints);
+                break;
+            default : return Bracket(R, x, constraints);
+
+        }
+    }
+
     // TODO
-    Eigen::VectorXd PenaltyConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+    Eigen::VectorXd PenaltyConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
                                        std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
 
         return x;
