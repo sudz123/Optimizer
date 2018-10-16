@@ -12,6 +12,54 @@
 
 namespace Optimizer {
 
+    enum class BM {
+        // Enum class which users can use to select the bracketing method
+        // B_PHASE is for Bounding Phase
+        // E_SEARCH is for Exhaustive Search
+        B_PHASE,
+        E_SEARCH
+    };
+
+    enum class UDM {
+        // Enum class which users can use to select the unidirectional search method
+        // N_RAP is for Newton Raphson
+        // G_search is for Golden Section Search
+        // I_HALVE is for Interval Halving
+        N_RAP,
+        G_SEARCH,
+        I_HALVE
+    };
+
+    enum class MVO {
+        // Enum class which users can use to select the multivariable search method
+        // V_METRIC is for variable metric or DFP
+        // CAUCHY is for Cauchy's Algorithm
+        // Newton is for Newton's Algorithm
+        // Marquardt is for Marquardt' Algorithm
+        // Simplex is for Simplex Search
+        // C_GRADIENT if for Conjugate Gradient
+        V_METRIC,
+        CAUCHY,
+        NEWTON,
+        MARQUARDT,
+        SIMPLEX,
+        C_GRADIENT
+    };
+
+    enum class PF {
+        // Enum class which users can use to select the Penalty function
+        // PARABOLIC if for parabolic penalty function
+        // I_BARRIER is for Infiniter Barrier penalty function
+        // LOG is for log penalty function
+        // INVERSE is for inverse penalty function
+        // BRACKET is for bracket operator penalty function
+        PARABOLIC,
+        I_BARRIER,
+        LOG,
+        INVERSE,
+        BRACKET
+    };
+
     Eigen::Vector2d BoundingPhase (std::function<double (double)> obj_func, double x) {
         // The Bounding Phase method
         // Input is a std::function(of the objective function) and the variable of type double
@@ -348,42 +396,6 @@ namespace Optimizer {
 
         return x;
     }
-
-
-
-    enum class BM {
-        // Enum class which users can use to select the bracketing method
-        // B_PHASE is for Bounding Phase
-        // E_SEARCH is for Exhaustive Search
-        B_PHASE,
-        E_SEARCH
-    };
-
-    enum class UDM {
-        // Enum class which users can use to select the unidirectional search method
-        // N_RAP is for Newton Raphson
-        // G_search is for Golden Section Search
-        // I_HALVE is for Interval Halving
-        N_RAP,
-        G_SEARCH,
-        I_HALVE
-    };
-
-    enum class MVO {
-        // Enum class which users can use to select the multivariable search method
-        // V_METRIC is for variable metric or DFP
-        // CAUCHY is for Cauchy's Algorithm
-        // Newton is for Newton's Algorithm
-        // Marquardt is for Marquardt' Algorithm
-        // Simplex is for Simplex Search
-        // C_GRADIENT if for Conjugate Gradient
-        V_METRIC,
-        CAUCHY,
-        NEWTON,
-        MARQUARDT,
-        SIMPLEX,
-        C_GRADIENT
-    };
 
     double SVOptimize (std::function<double (double)> obj_func,
             double x, BM b_meth = BM::B_PHASE,
