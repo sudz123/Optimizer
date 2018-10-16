@@ -88,10 +88,68 @@ namespace Optimizer {
         return fib;
     }
 
+    // Penalty functions
+
+    double Parabolic(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
+
+        double ans = 0;
+
+        for(int i = 0; i < constraints.size(); i++){
+            ans += R * pow(constraints[i](x), 2);
+        }
+
+        return ans;
+    }
+
+    double InfiniteBarrier(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
+
+        double ans = 0;
+
+        for(int i = 0; i < constraints.size(); i++){
+            ans += R * std::abs(constraints[i](x));
+        }
+        
+        return ans;
+    }
+
+    double Log(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
+
+        double ans = 0;
+
+        for(int i = 0; i < constraints.size(); i++){
+            ans -= R * log(constraints[i](x));
+        }
+        
+        return ans;
+    }
+
+    double Inverse(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
+
+        double ans = 0;
+
+        for(int i = 0; i < constraints.size(); i++){
+            ans += R * ( 1.0 / constraints[i](x) );
+        }
+        
+        return ans;
+    }
+
+    double Bracket(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
+
+        double ans = 0;
+
+        for(int i = 0; i < constraints.size(); i++){
+
+            double alpha = constraints[i](x);
+            
+            if(alpha < 0) {
+                ans += R * pow(alpha, 2);
+            }
+        }
+        
+        return ans;
+    }
 
 }
-
-
-
 
 #endif  /* OPTIMIZE_UTIL_H */
