@@ -98,7 +98,7 @@ int main () {
 
     cout << "Testing MVOptimize on SumSquares with initial point (4, -3, 7)." << endl;
     cout << "The Optimal Point obtained is: ";
-    cout << MVOptimize(SumSquares, x, MVO::NEWTON) << endl;
+    cout << MVOptimize(SumSquares, x, 200,  MVO::NEWTON) << endl;
 
     cout << "Testing DFP on sum squared function with 3 variables and initial point (4, -3, 7)." << endl;
     cout << "The Optimal Point obtained is: " << endl;
@@ -137,10 +137,11 @@ int main () {
 
     cout << "Testing Penalty Function Method with custom function" << endl;
     cout << "The Optimal Point obtained is: " << endl;
-    Vector2d x1(50, 50);
+    Vector2d x1(2, 2);
     vector<std::function<double (Eigen::VectorXd)>> eq_const;
-    vector<std::function<double (Eigen::VectorXd)>> ineq_const{ineq1, ineq2};
-    cout << PenaltyConstrained(func_cust, x1, eq_const, ineq_const, 0, 0, 0.1, 10) << endl;
+    vector<std::function<double (Eigen::VectorXd)>> ineq_const{[](Vector2d x) { return pow(x(0) - 5, 2) + pow(x(1), 2) - 26; },
+    [](Vector2d x) { return x(0); }, [](Vector2d x) { return x(1); }};
+    cout << PenaltyConstrained(Himmelblau, x1, ineq_const, eq_const) << endl;
 
 
     cout << "Testing Data Save Methods" << endl;
