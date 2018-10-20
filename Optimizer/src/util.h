@@ -89,13 +89,13 @@ namespace Optimizer {
     }
 
     // Penalty functions
-
-    double Parabolic(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
+    double Parabolic(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x, Eigen::VectorXd tau){
         double ans = 0;
         for(int i = 0; i < constraints.size(); i++) {
-            ans += pow(constraints[i](x), 2);
+            ans += pow(constraints[i](x) + tau(i), 2);
         }
         return ans;
+
     }
 
     double InfiniteBarrier(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
@@ -122,10 +122,10 @@ namespace Optimizer {
         return ans;
     }
 
-    double Bracket(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
+    double Bracket(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x, Eigen::VectorXd sigma){
         double ans = 0;
         for(int i = 0; i < constraints.size(); i++){
-            double alpha = constraints[i](x);
+            double alpha = constraints[i](x) + sigma(i);
             if(alpha < 0) {
                 ans += pow(alpha, 2);
             }
