@@ -143,6 +143,9 @@ int main () {
     [](Vector2d x) { return x(0); }, [](Vector2d x) { return x(1); }};
     cout << PenaltyConstrained(Himmelblau, x1, ineq_const, eq_const) << endl;
 
+    cout << "Testing Multiplier Constrained Method with custom function" << endl;
+    cout << "The Optimal Point obtained is: " << endl;
+    cout << MultiplierConstrained(Himmelblau, x1, ineq_const, eq_const) << endl;
 
     cout << "Testing Data Save Methods" << endl;
     Optimum point1;

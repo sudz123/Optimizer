@@ -869,8 +869,8 @@ namespace Optimizer {
 		}
 	}
 
-    double GetMultiplierPenalty(std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
-                                std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, 
+    double GetMultiplierPenalty(std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+                                std::vector<std::function<double (Eigen::VectorXd)>> eq_const, 
 				                Eigen::VectorXd x, Eigen::VectorXd tau, Eigen::VectorXd sigma) {
         
         double sub = 0;
@@ -892,8 +892,7 @@ namespace Optimizer {
 
 		double f_prev, f;
 
-		int it = 0;
-		for (it = 0; it < M; ++it) {
+		for (int it = 0; it < M; ++it) {
 			std::function<double (Eigen::VectorXd)> func = [obj_func, ineq, eq, Rineq, Req, Pineq, Peq]
 				(Eigen::VectorXd x)->double { return obj_func(x) + Rineq * GetPenalty(ineq, x, Pineq) +
 				Req * GetPenalty(eq, x, Peq); };
@@ -915,8 +914,9 @@ namespace Optimizer {
 	}
 
     Eigen::VectorXd MultiplierConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, 
-                                            std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
-                                            std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, int M = 100, double R = 0.1){
+                                            std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
+                                            std::vector<std::function<double (Eigen::VectorXd)>> eq_const, int M = 100,
+                                            double R = 0.1, double epsilon = 1e-5) {
 
         double f_new, f;
         Eigen::VectorXd x_new = x;
@@ -926,17 +926,17 @@ namespace Optimizer {
         for(int i=0; i<M; ++i){
 
             std::function<double (Eigen::VectorXd)> func = [R, obj_func, x, ineq_const, eq_const, sigma, tau] (Eigen::VectorXd x)->double { 
-                return obj_func(x) + R * GetMultiplierPenalty(eq_const, ineq_const, x, tau, sigma); };
+                return obj_func(x) + R * GetMultiplierPenalty(ineq_const, eq_const, x, tau, sigma); };
 
-            if(i != 0) {
+            if(i > 0) {
                 f = f_new;
                 x = x_new;
             }
 
-            x_new = MVOptimize(func, x);
+            x_new = MVOptimize(func, x, 150);
             f_new = func(x_new);
 
-            if(i != 0 && std::abs(f_new - f) <= 1e-5)
+            if(i > 0 && std::abs(f_new - f) < epsilon)
                 break;
             else {
                 for(int i = 0; i<ineq_const.size(); i++){
@@ -954,12 +954,9 @@ namespace Optimizer {
                 } 
             }
 
-
-
         }
 
         return x_new;
-
     }
 
 }
