@@ -859,9 +859,11 @@ namespace Optimizer {
 
     double GetPenalty(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints, PF p_func = PF::BRACKET){
         
+        Eigen::VectorXd temp = Eigen::VectorXd::Zero(constraints.size());
+
         switch (p_func) {
 
-            case PF::PARABOLIC: return Parabolic(R, x, constraints);
+            case PF::PARABOLIC: return Parabolic(R, x, constraints, temp);
                 break;
             case PF::I_BARRIER : return InfiniteBarrier(R, x, constraints);
                 break;
@@ -869,11 +871,26 @@ namespace Optimizer {
                 break;
             case PF::INVERSE : return Inverse(R, x, constraints);
                 break;
-            case PF::BRACKET : return Bracket(R, x, constraints);
+            case PF::BRACKET : return Bracket(R, x, constraints, temp);
                 break;
-            default : return Bracket(R, x, constraints);
+            default : return Bracket(R, x, constraints, temp);
 
         }
+    }
+
+    double GetMultiplierPenalty(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
+                                std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, Eigen::VectorXd tau, Eigen::VectorXd sigma) {
+        
+        double sub = 0;
+        for(int i = 0; i<ineq_const.size(); i++){
+            sub -= pow(sigma(i), 2);
+        }
+
+        for(int i = 0; i<eq_const.size(); i++){
+            sub -= pow(tau(i), 2);
+        }
+
+        return Bracket(R, x, ineq_const, sigma) + Parabolic(R, x, eq_const, tau) + R * sub;
     }
     
     Eigen::VectorXd PenaltyConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, 
@@ -914,11 +931,51 @@ namespace Optimizer {
     }
 
     // TODO
-    Eigen::VectorXd MultiplierConstrained(std::function<double(Eigen::VectorXd)> obj_func, Eigen::VectorXd x,
-                                            std::vector<std::function<double (Eigen::VectorXd)>> ineq_const,
-                                            std::vector<std::function<double (Eigen::VectorXd)>> eq_const){
+    Eigen::VectorXd MultiplierConstrained(std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x, 
+                                            std::vector<std::function<double (Eigen::VectorXd)>> eq_const,
+                                            std::vector<std::function<double (Eigen::VectorXd)>> ineq_const, double R, int M = 100){
 
-        return x;
+        double f_new, f;
+        Eigen::VectorXd x_new = x;
+        Eigen::VectorXd sigma = Eigen::VectorXd::Zero(eq_const.size());
+        Eigen::VectorXd tau = Eigen::VectorXd::Zero(ineq_const.size());        
+
+        for(int i=0; i<M; ++i){
+
+            std::function<double (Eigen::VectorXd)> func = [R, obj_func, x, ineq_const, eq_const, sigma, tau] (Eigen::VectorXd x)->double { 
+                return obj_func(x) + GetMultiplierPenalty(R, x, eq_const, ineq_const, tau, sigma); };
+
+            if(i != 0) {
+                f = f_new;
+                x = x_new;
+            }
+
+            x_new = MVOptimize(func, x);
+            f_new = func(x_new);
+
+            if(i != 0 && std::abs(f_new - f) <= 1e-5)
+                break;
+            else {
+                for(int i = 0; i<ineq_const.size(); i++){
+                    double alpha = ineq_const[i](x) + sigma(i);
+                    if(alpha < 0) {
+                        sigma(i) = alpha;
+                    }
+                    else {
+                        sigma(i) = 0;
+                    }
+                }
+
+                for(int i = 0; i<eq_const.size(); i++){
+                    tau(i) += eq_const[i](x);
+                } 
+            }
+
+
+
+        }
+
+        return x_new;
 
     }
     
