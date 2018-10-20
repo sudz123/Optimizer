@@ -89,65 +89,48 @@ namespace Optimizer {
     }
 
     // Penalty functions
-
-    double Parabolic(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd tau){
-
+    double Parabolic(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x, Eigen::VectorXd tau){
         double ans = 0;
-
-        for(int i = 0; i < constraints.size(); i++){
+        for(int i = 0; i < constraints.size(); i++) {
             ans += pow(constraints[i](x) + tau(i), 2);
         }
+        return ans;
 
-        return R * ans;
     }
 
-    double InfiniteBarrier(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
-
+    double InfiniteBarrier(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
         double ans = 0;
-
-        for(int i = 0; i < constraints.size(); i++){
-            ans += R * std::abs(constraints[i](x));
+        for(int i = 0; i < constraints.size(); i++) {
+            ans += abs(constraints[i](x));
         }
-        
         return ans;
     }
 
-    double Log(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
-
+    double Log(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
         double ans = 0;
-
         for(int i = 0; i < constraints.size(); i++){
-            ans -= R * log(constraints[i](x));
+            ans -= log(constraints[i](x));
         }
-        
         return ans;
     }
 
-    double Inverse(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints){
-
+    double Inverse(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
         double ans = 0;
-
         for(int i = 0; i < constraints.size(); i++){
-            ans += R * ( 1.0 / constraints[i](x) );
+            ans +=  1.0 / constraints[i](x);
         }
-        
         return ans;
     }
 
-    double Bracket(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd sigma){
-
+    double Bracket(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x, Eigen::VectorXd sigma){
         double ans = 0;
-
         for(int i = 0; i < constraints.size(); i++){
-
             double alpha = constraints[i](x) + sigma(i);
-            
             if(alpha < 0) {
                 ans += pow(alpha, 2);
             }
         }
-        
-        return R * ans;
+        return ans;
     }
 
 }

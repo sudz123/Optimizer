@@ -54,7 +54,7 @@ namespace Optimizer {
         // INVERSE is for inverse penalty function
         // BRACKET is for bracket operator penalty function
         PARABOLIC,
-        I_BARRIER,
+        INF_BARRIER,
         LOG,
         INVERSE,
         BRACKET
@@ -813,7 +813,7 @@ namespace Optimizer {
             }
             iter++;
             if(iter >= M)
-            {  
+            {
                 std::cout << "SimplexSearch: exceeded number of iterations, terminating" << std::endl;
                 return x_new;
             }
@@ -823,8 +823,8 @@ namespace Optimizer {
     }
 
     Eigen::VectorXd MVOptimize (std::function<double (Eigen::VectorXd)> obj_func,
-            Eigen::VectorXd x, MVO m_opt = MVO::MARQUARDT, BM b_meth = BM::B_PHASE,
-            UDM u_search = UDM::N_RAP) {
+            Eigen::VectorXd x, int M = 200, MVO m_opt = MVO::V_METRIC, BM b_meth = BM::B_PHASE,
+            UDM u_search = UDM::G_SEARCH) {
         // This function does the Multi-variable optimzation
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
@@ -838,25 +838,26 @@ namespace Optimizer {
 
         switch (m_opt) {
 
-            case MVO::V_METRIC : ans = DFP(obj_func, x);
+            case MVO::V_METRIC : ans = DFP(obj_func, x, M);
                 break;
-            case MVO::CAUCHY : ans = Cauchy(obj_func, x);
+            case MVO::CAUCHY : ans = Cauchy(obj_func, x, M);
                 break;
-            case MVO::NEWTON : ans = Newton(obj_func, x);
+            case MVO::NEWTON : ans = Newton(obj_func, x, M);
                 break;
-            case MVO::MARQUARDT : ans = Marquardt(obj_func, x);
+            case MVO::MARQUARDT : ans = Marquardt(obj_func, x, M);
                 break;
-            case MVO::SIMPLEX : ans = Simplex(obj_func, x);
+            case MVO::SIMPLEX : ans = Simplex(obj_func, x, M);
                 break;
-            case MVO::C_GRADIENT : ans = ConjugateGradient(obj_func, x);
+            case MVO::C_GRADIENT : ans = ConjugateGradient(obj_func, x, M);
                 break;
-            default : ans = Marquardt(obj_func, x);
+            default : ans = DFP(obj_func, x);
 
         }
 
         return ans;
     }
 
+<<<<<<< Sudz-Image
     double GetPenalty(double R, Eigen::VectorXd x, std::vector<std::function<double (Eigen::VectorXd)>> constraints, PF p_func = PF::BRACKET){
         
         Eigen::VectorXd temp = Eigen::VectorXd::Zero(constraints.size());
@@ -979,6 +980,47 @@ namespace Optimizer {
 
     }
     
+=======
+	double GetPenalty (std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x, PF penalty = PF::BRACKET) {
+		switch (penalty) {
+			case PF::BRACKET: return Bracket(constraints, x);
+			case PF::PARABOLIC: return Parabolic(constraints, x);
+			case PF::LOG: return Log(constraints, x);
+			case PF::INVERSE: return Inverse(constraints, x);
+			case PF::INF_BARRIER: return InfiniteBarrier(constraints, x);
+			default: return Bracket(constraints, x);
+		}
+	}
+
+	Eigen::VectorXd PenaltyConstrained (std::function<double (Eigen::VectorXd)> obj_func, Eigen::VectorXd x,
+			std::vector<std::function<double (Eigen::VectorXd)>> ineq, std::vector<std::function<double (Eigen::VectorXd)>> eq,
+			int M = 100, double Rineq = 0.1, double Req = 0.1, double cineq = 10, double ceq = 10,
+			PF Pineq = PF::BRACKET, PF Peq = PF::PARABOLIC, double epsilon = 1e-5) {
+
+		double f_prev, f;
+
+		int it = 0;
+		for (it = 0; it < M; ++it) {
+			std::function<double (Eigen::VectorXd)> func = [obj_func, ineq, eq, Rineq, Req, Pineq, Peq]
+				(Eigen::VectorXd x)->double { return obj_func(x) + Rineq * GetPenalty(ineq, x, Pineq) +
+				Req * GetPenalty(eq, x, Peq); };
+
+			if (it > 0)
+				f_prev = f;
+
+			x = MVOptimize(func, x, 150);
+			f = func(x);
+
+			if (it > 0 && abs(f - f_prev) < epsilon)
+				break;
+
+			Rineq *= cineq;
+			Req *= ceq;
+		}
+
+		return x;
+	}
+>>>>>>> master
 
 }
 
