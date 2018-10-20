@@ -101,7 +101,7 @@ namespace Optimizer {
     double InfiniteBarrier(std::vector<std::function<double (Eigen::VectorXd)>> constraints, Eigen::VectorXd x){
         double ans = 0;
         for(int i = 0; i < constraints.size(); i++) {
-            ans += abs(constraints[i](x));
+            ans += std::abs(constraints[i](x));
         }
         return ans;
     }

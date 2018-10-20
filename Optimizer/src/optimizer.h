@@ -904,7 +904,7 @@ namespace Optimizer {
 			x = MVOptimize(func, x, 150);
 			f = func(x);
 
-			if (it > 0 && abs(f - f_prev) < epsilon)
+			if (it > 0 && std::abs(f - f_prev) < epsilon)
 				break;
 
 			Rineq *= cineq;
