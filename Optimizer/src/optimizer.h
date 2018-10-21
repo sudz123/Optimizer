@@ -920,8 +920,8 @@ namespace Optimizer {
 
         double f_new, f;
         Eigen::VectorXd x_new = x;
-        Eigen::VectorXd sigma = Eigen::VectorXd::Zero(eq_const.size());
-        Eigen::VectorXd tau = Eigen::VectorXd::Zero(ineq_const.size());        
+        Eigen::VectorXd sigma = Eigen::VectorXd::Zero(ineq_const.size());
+        Eigen::VectorXd tau = Eigen::VectorXd::Zero(eq_const.size());        
 
         for(int i=0; i<M; ++i){
 
