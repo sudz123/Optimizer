@@ -537,14 +537,14 @@ namespace Optimizer {
     }
 
     Eigen::VectorXd Newton (std::function<double (Eigen::VectorXd)> obj_func,
-                            Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double epsilon2 = 1e-5,
+                            Eigen::VectorXd x, int M = 1000, double epsilon1 = 1e-5, double /*epsilon2*/ = 1e-5,
                             BM b_meth = BM::B_PHASE,
                             UDM u_search = UDM::N_RAP) {
         // This function does the multi-variable optimization using the Newton's algorithm
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
         // x - The initial point from where we begin, of type Eigen::VectorXd
-        // M - Number of interations, type int
+        // M - Number of iterations, type int
         // epsilon1 - termination parameter, type double
         // epsilon 2 - termination parameter, type double
         // b_meth - Selects the Bracketing method to be used, type enum class BM
@@ -761,7 +761,7 @@ namespace Optimizer {
             //next to worst point
             Eigen::VectorXd xg(n);
             xg.col(0) = points.row(func_vals[func_vals.size()-2].second);
-            //central point 1 row with n variabvles
+            //central point 1 row with n variables
             Eigen::VectorXd xc(n);
             //i < N because we exclude worst point from this sum(the worst point is also the last point in this vectpr)
          
@@ -823,9 +823,9 @@ namespace Optimizer {
     }
 
     Eigen::VectorXd MVOptimize (std::function<double (Eigen::VectorXd)> obj_func,
-            Eigen::VectorXd x, int M = 200, MVO m_opt = MVO::V_METRIC, BM b_meth = BM::B_PHASE,
-            UDM u_search = UDM::G_SEARCH) {
-        // This function does the Multi-variable optimzation
+            Eigen::VectorXd x, int M = 200, MVO m_opt = MVO::V_METRIC, BM /*b_meth*/ = BM::B_PHASE,
+            UDM /*u_search*/ = UDM::G_SEARCH) {
+        // This function does the Multi-variable optimization
         // Input parameters are :
         // obj_func - The std::function variable containing our objective function
         // x - Our initial point of type Eigen::VectorXd
@@ -874,11 +874,11 @@ namespace Optimizer {
 				                Eigen::VectorXd x, Eigen::VectorXd tau, Eigen::VectorXd sigma) {
         
         double sub = 0;
-        for(int i = 0; i<ineq_const.size(); i++){
+        for(size_t i = 0; i<ineq_const.size(); i++){
             sub -= pow(sigma(i), 2);
         }
 
-        for(int i = 0; i<eq_const.size(); i++){
+        for(size_t i = 0; i<eq_const.size(); i++){
             sub -= pow(tau(i), 2);
         }
 
@@ -890,7 +890,7 @@ namespace Optimizer {
 			int M = 100, double Rineq = 0.1, double Req = 0.1, double cineq = 10, double ceq = 10,
 			PF Pineq = PF::BRACKET, PF Peq = PF::PARABOLIC, double epsilon = 1e-5) {
 
-		double f_prev, f;
+		double f_prev=0.0, f=0.0;
 
 		for (int it = 0; it < M; ++it) {
 			std::function<double (Eigen::VectorXd)> func = [obj_func, ineq, eq, Rineq, Req, Pineq, Peq]
@@ -918,15 +918,15 @@ namespace Optimizer {
                                             std::vector<std::function<double (Eigen::VectorXd)>> eq_const, int M = 100,
                                             double R = 0.1, double epsilon = 1e-5) {
 
-        double f_new, f;
+        double f_new = 0.0, f = 0.0;
         Eigen::VectorXd x_new = x;
         Eigen::VectorXd sigma = Eigen::VectorXd::Zero(ineq_const.size());
         Eigen::VectorXd tau = Eigen::VectorXd::Zero(eq_const.size());        
 
         for(int i=0; i<M; ++i){
 
-            std::function<double (Eigen::VectorXd)> func = [R, obj_func, x, ineq_const, eq_const, sigma, tau] (Eigen::VectorXd x)->double { 
-                return obj_func(x) + R * GetMultiplierPenalty(ineq_const, eq_const, x, tau, sigma); };
+            std::function<double (Eigen::VectorXd)> func = [R, obj_func, x, ineq_const, eq_const, sigma, tau] (Eigen::VectorXd value)->double { 
+                return obj_func(value) + R * GetMultiplierPenalty(ineq_const, eq_const, x, tau, sigma); };
 
             if(i > 0) {
                 f = f_new;
@@ -939,7 +939,7 @@ namespace Optimizer {
             if(i > 0 && std::abs(f_new - f) < epsilon)
                 break;
             else {
-                for(int i = 0; i<ineq_const.size(); i++){
+                for(size_t i = 0; i<ineq_const.size(); i++){
                     double alpha = ineq_const[i](x) + sigma(i);
                     if(alpha < 0) {
                         sigma(i) = alpha;
@@ -949,9 +949,9 @@ namespace Optimizer {
                     }
                 }
 
-                for(int i = 0; i<eq_const.size(); i++){
+                for(size_t i = 0; i < eq_const.size(); i++){
                     tau(i) += eq_const[i](x);
-                } 
+                }
             }
 
         }
