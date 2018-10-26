@@ -7,7 +7,7 @@ These are the features this library would be providing :
     - Exhaustive Search (Implemented)
     - Bounding Phase (Implemented)
   - Region Elimination Methods
-    - Interval Halving
+    - Interval Halving (Implemented)
     - Fibonnaci Search (Implemented)
     - Golden Section Search (Implemented)
   - Point Estimation Methods
@@ -30,6 +30,10 @@ These are the features this library would be providing :
     - Marquardt's (Implemented)
     - Conjugate Gradient (Implemented)
     - Variable Metric (DFP) (Implemented)
-    
+
+- Constrained Optimization Algorithms
+  - Penalty Function Method
+  - Method of Multipliers
+  
   **More Features coming soon!**
     
