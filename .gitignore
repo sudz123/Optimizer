@@ -38,4 +38,4 @@ data.txt
 # Documentation
 Documentation/*
 !/Documentation/README.md
-!/Documentation/dist/*
+!/Documentation/dist
