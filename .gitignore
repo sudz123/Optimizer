@@ -34,8 +34,3 @@
 # Data Files
 data.csv
 data.txt
-
-# Documentation
-Documentation/*
-!/Documentation/README.md
-!/Documentation/dist
