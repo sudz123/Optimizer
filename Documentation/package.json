@@ -19,6 +19,7 @@
     "sass": "^1.14.3"
   },
   "dependencies": {
+    "highlight.js": "^9.13.1",
     "ramda": "^0.25.0"
   }
 }
