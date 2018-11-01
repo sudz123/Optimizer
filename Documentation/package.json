@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-pages": "node scripts/parse-md.js",
-    "dev": "parcel index.html"
+    "dev": "parcel index.html",
+    "build": "parcel build index.html",
+    "clean-dist": "npm run rmdist && mkdir ./dist",
+    "rmdist": "rimraf ./dist"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,7 @@
     "@babel/preset-env": "^7.1.0",
     "marked": "^0.5.1",
     "parcel-bundler": "^1.10.3",
+    "rimraf": "^2.6.2",
     "sass": "^1.14.3"
   },
   "dependencies": {
