@@ -1,20 +1,22 @@
-@import 'abstracts/_functions';
-@import 'abstracts/_mixins';
+// vendors
+@import 'normalize.css';
 
-@import 'base/_colors';
-@import 'base/_resets';
-@import 'base/_typography';
+@import 'abstracts/_functions.scss';
+@import 'abstracts/_mixins.scss';
 
-@import 'layout/_header';
-@import 'layout/_content';
-@import 'layout/_sidebar';
-@import 'layout/_footer';
-@import 'layout/_wrapper';
+@import 'base/_colors.scss';
+@import 'base/_resets.scss';
+@import 'base/_typography.scss';
 
-@import 'components/_drop-nav';
-@import 'components/_navigation';
-@import 'components/_sidebar-nav';
+@import 'layout/_header.scss';
+@import 'layout/_content.scss';
+@import 'layout/_sidebar.scss';
+@import 'layout/_footer.scss';
+@import 'layout/_wrapper.scss';
 
-@import 'themes/_hljs';
+@import 'components/_drop-nav.scss';
+@import 'components/_navigation.scss';
+@import 'components/_sidebar-nav.scss';
 
-@import '_shame';
+@import 'themes/_hljs.scss';
+@import './_shame.scss';

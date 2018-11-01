@@ -4,9 +4,11 @@
   overflow: auto;
 
   &__item {
+    color: $gray-dark-1;
+
     > a {
       font-size: 1.2em;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.0211em;
     }
 
     > ul {
@@ -16,6 +18,10 @@
         margin-bottom: 0.4em;
       }
     }
+  }
+
+  &__subitem {
+    color: $gray-dark-2;
   }
 
   &__item:not(:last-child) {

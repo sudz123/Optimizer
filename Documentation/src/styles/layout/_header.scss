@@ -11,8 +11,20 @@
   @include z-index(header);
 
   &__brand {
+    position: relative;
     align-self: center;
     font-size: 1.428em;
     margin-right: auto;
+    text-shadow: $primary-dark 1px 0 10px;
+
+    > i {
+      position: absolute;
+      top: -0.25em;
+      left: -0.25em;
+      font-size: 1.67em;
+      color: $gray-dark-2;
+      text-shadow: initial;
+      z-index: -1;
+    }
   }
 }
