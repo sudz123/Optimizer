@@ -1,6 +1,7 @@
 $indexes: (
   header: 100,
   drop-nav: 90,
+  sidebar: 80,
 );
 
 @function z-index($key) {

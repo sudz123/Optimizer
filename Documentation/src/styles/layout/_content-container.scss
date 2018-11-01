@@ -1,4 +1,6 @@
 .content-container {
+  position: relative;
+
   @include break(lg) {
     @include flex($justify: flex-end);
     width: 75%;

@@ -1,0 +1,24 @@
+.sidebar-nav {
+  height: 100%;
+  width: 88%;
+  overflow: auto;
+
+  &__item {
+    > a {
+      font-size: 1.2em;
+      letter-spacing: 0.04em;
+    }
+
+    > ul {
+      padding: 0.4em 0.8em 0 0.8em;
+
+      li:not(:last-child) {
+        margin-bottom: 0.4em;
+      }
+    }
+  }
+
+  &__item:not(:last-child) {
+    margin-bottom: 0.4em;
+  }
+}

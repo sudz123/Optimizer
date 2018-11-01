@@ -1,9 +1,9 @@
 .content {
-  @include content-wrap;
-  margin: 0 auto;
   padding-top: 8.13em;
 
   @include break(lg) {
+    flex: 1 0 75%;
     padding-top: 6.13em;
+    margin-left: 20em;
   }
 }
