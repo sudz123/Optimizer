@@ -1,0 +1,29 @@
+$breakpoints: (
+  sm: 35.625em,
+  md: 47.5em,
+  lg: 66.375em,
+  xlg: 75em,
+);
+
+@mixin content-wrap() {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 1.2rem;
+}
+
+@mixin flex($dir: row wrap, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-flow: $dir;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin break($size) {
+  @media screen and (min-width: map-get($breakpoints, $size)) {
+    @content;
+  }
+}
+
+@mixin z-index($key) {
+  z-index: z-index($key);
+}

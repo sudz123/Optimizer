@@ -1,0 +1,7 @@
+.content-container {
+  @include break(lg) {
+    @include flex($justify: flex-end);
+    width: 75%;
+    margin-left: auto;
+  }
+}

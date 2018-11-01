@@ -1,0 +1,18 @@
+.header {
+  @include flex($align: center);
+  @include content-wrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin: 0 auto;
+  background-color: $secondary-dark;
+  color: $primary-light;
+  @include z-index(header);
+
+  > h1 {
+    font-size: 1.428em;
+    margin-right: auto;
+  }
+}

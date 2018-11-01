@@ -1,0 +1,9 @@
+.content {
+  @include content-wrap;
+  margin: 0 auto;
+  padding-top: 8.13em;
+
+  @include break(lg) {
+    padding-top: 6.13em;
+  }
+}
