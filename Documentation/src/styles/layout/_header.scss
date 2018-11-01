@@ -1,17 +1,17 @@
 .header {
-  @include flex($align: center);
-  @include content-wrap;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
+  padding: 0.693333em 0;
   margin: 0 auto;
   background-color: $secondary-dark;
   color: $primary-light;
   @include z-index(header);
 
-  > h1 {
+  &__brand {
+    align-self: center;
     font-size: 1.428em;
     margin-right: auto;
   }
