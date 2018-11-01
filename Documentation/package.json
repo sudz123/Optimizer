@@ -1,7 +1,7 @@
 {
-  "name": "parcel",
+  "name": "optimizer-docs",
   "version": "1.0.0",
-  "description": "",
+  "description": "Documentation site for the Optimizer C++ library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,9 +11,24 @@
     "clean-dist": "npm run rmdist && mkdir ./dist",
     "rmdist": "rimraf ./dist"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudz123/Optimizer.git"
+  },
+  "keywords": [
+    "c++",
+    "optimization",
+    "algorithms",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "vinnyA3",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sudz123/Optimizer/issues"
+  },
+  "homepage": "https://github.com/sudz123/Optimizer#readme",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
@@ -24,6 +39,7 @@
   },
   "dependencies": {
     "highlight.js": "^9.13.1",
+    "normalize.css": "^8.0.0",
     "ramda": "^0.25.0"
   }
 }
