@@ -10,3 +10,9 @@ pre {
   background-color: #f8f8f8;
   border-radius: 5px;
 }
+
+pre,
+code {
+  white-space: pre;
+  overflow-x: auto;
+}

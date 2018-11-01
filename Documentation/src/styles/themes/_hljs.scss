@@ -1,4 +1,9 @@
 .hljs {
+  overflow-x: auto;
+  padding: 0.5em;
+  display: block;
+  // white-space: pre-wrap;
+
   &-keyword {
     color: #8959a8;
   }
