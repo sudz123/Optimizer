@@ -1,33 +1,22 @@
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
+// vendors
+@import 'normalize.css';
 
-:root {
-  box-sizing: border-box;
-  font-size: calc(1vw + 8px);
-}
+@import 'abstracts/_functions.scss';
+@import 'abstracts/_mixins.scss';
 
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
+@import 'base/_colors.scss';
+@import 'base/_resets.scss';
+@import 'base/_typography.scss';
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  font-family: Helvetica;
-  background-color: #f9f9f9;
-  color: #232323;
-}
+@import 'layout/_header.scss';
+@import 'layout/_content.scss';
+@import 'layout/_sidebar.scss';
+@import 'layout/_footer.scss';
+@import 'layout/_wrapper.scss';
 
-.intro {
-  flex: 0 0 50%;
-  text-align: center;
-  padding: 0.8em;
-}
+@import 'components/_drop-nav.scss';
+@import 'components/_navigation.scss';
+@import 'components/_sidebar-nav.scss';
+
+@import 'themes/_hljs.scss';
+@import './_shame.scss';

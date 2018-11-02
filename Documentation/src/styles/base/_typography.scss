@@ -1,0 +1,52 @@
+$base-font-family: 'Open Sans', sans-serif;
+$base-heading-font-family: 'Roboto', sans-serif;
+
+body {
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 0.024rem;
+  font-family: $base-heading-font-family;
+}
+
+// augmented forth: 1.414
+h1 {
+  font-size: 3.998rem;
+}
+
+h2 {
+  font-size: 2.827rem;
+}
+
+h3 {
+  font-size: 1.999rem;
+}
+
+h4 {
+  font-size: 1.414rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+p,
+blockquote,
+span,
+li,
+a {
+  font-family: $base-font-family;
+}
+
+p {
+  max-width: 62.442rem;
+  font-size: 1.133rem;
+  line-height: 1.5;
+  letter-spacing: 0.032rem;
+}

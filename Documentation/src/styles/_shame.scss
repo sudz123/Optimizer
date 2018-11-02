@@ -1,0 +1,19 @@
+// shame file --- things to refactor and organize
+// temp - testing
+p {
+  margin-bottom: 2em;
+}
+
+// move to theme or component
+pre {
+  padding: 1.12em 1.12em;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  max-width: 62.442rem;
+}
+
+pre,
+code {
+  white-space: pre;
+  overflow-x: auto;
+}

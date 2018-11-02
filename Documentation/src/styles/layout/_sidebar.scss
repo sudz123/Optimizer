@@ -1,0 +1,15 @@
+.sidebar {
+  display: none;
+  top: 0;
+  height: 100%;
+  width: 20em;
+  padding-top: 6.13em;
+  padding: 6.13em 0.8em 1.2em 0;
+  margin-left: auto;
+  @include z-index(sidebar);
+
+  @include break(lg) {
+    position: fixed;
+    display: block;
+  }
+}

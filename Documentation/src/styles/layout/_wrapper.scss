@@ -1,0 +1,7 @@
+.wrapper {
+  @include content-wrap;
+
+  &--flex {
+    @include flex();
+  }
+}

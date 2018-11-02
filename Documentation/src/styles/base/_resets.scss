@@ -1,0 +1,49 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  box-sizing: border-box;
+  font-size: 0.895rem;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  line-height: 1.4;
+  background-color: $primary-light;
+  color: $primary-dark;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
