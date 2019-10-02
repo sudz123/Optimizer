@@ -60,3 +60,8 @@ Go and add your name to the [contributors.md](contributors.md) file.
 - Kindly do look into the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
 - Follow the repository guidelines given in [RULES](Rules/README.md)
 - Contact `sudarshan.kamath97@gmail.com`/ `diptanshu.agarwal@gmail.com ` for any issues(don't spam)
+
+## New important features
+- Constrained Optimization Algorithms
+- Penalty Function Method
+- Method of Multipliers
