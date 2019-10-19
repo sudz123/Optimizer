@@ -28,3 +28,5 @@
     - [LinkedIn](https://www.linkedin.com/in/gmrsagar)
 - [Srinath9721](https://github.com/srinath9721)   
 - [Pablo](https://github.com/pablo0910) 
+- [Gabriel Guedes](https://github.com/gguedesaz)
+    - [LinkedIn](https://www.linkedin.com/in/gabriel-guedes-01bb0bb8/)
