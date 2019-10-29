@@ -11,7 +11,6 @@
 #include <vector>
 
 namespace Optimizer {
-
     enum class BM {
         // Enum class which users can use to select the bracketing method
         // B_PHASE is for Bounding Phase
