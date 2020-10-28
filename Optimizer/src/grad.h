@@ -4,7 +4,6 @@
 
 // Macro for Eigen
 #include <Eigen/Dense>
-
 namespace Optimizer {
 
     Eigen::Vector2d Derivative (std::function<double (double)> func, double x) {
