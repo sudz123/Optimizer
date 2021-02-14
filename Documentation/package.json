@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "marked": "^0.5.1",
+    "marked": "^0.7.0",
     "parcel-bundler": "^1.10.3",
     "rimraf": "^2.6.2",
     "sass": "^1.14.3"
