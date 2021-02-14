@@ -38,7 +38,7 @@
     "sass": "^1.14.3"
   },
   "dependencies": {
-    "highlight.js": "^9.13.1",
+    "highlight.js": "^10.4.1",
     "normalize.css": "^8.0.0",
     "ramda": "^0.25.0"
   }
